@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kml xmlns = 'http://earth.google.com/kml/2.1'>
+  <Folder>
+    <NetworkLink>
+      <Link>
+        <href>kml_files/1jv6gcxsxoindex.kml</href>
+        <refreshMode>onInterval</refreshMode>
+        <refreshInterval>3600</refreshInterval>
+      </Link>
+    </NetworkLink>
+    <NetworkLink>
+      <Link>
+        <href>kml_files/gi9lmpnwdgindex.kml</href>
+        <refreshMode>onInterval</refreshMode>
+        <refreshInterval>3600</refreshInterval>
+      </Link>
+    </NetworkLink>
+  </Folder>
+</kml>
