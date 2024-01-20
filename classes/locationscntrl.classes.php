@@ -132,9 +132,9 @@ class locationsCntrl extends locations{
     }
 
     public function uploadKMS($file, $name, $description){
-        $destination_path = getcwd().DIRECTORY_SEPARATOR;
+        
         $target_dir = "../kml_files/";
-        $target_file = $destination_path . $target_dir . basename($file["name"]);
+        $target_file =  $target_dir . basename($file["name"]);
         $uploadOk = 1;
 
         if(file_exists($target_file)) {
