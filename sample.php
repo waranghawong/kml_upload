@@ -13,13 +13,13 @@
     }
   }
   elseif(strpos($user_agent, "Mac") !== FALSE){
-    $os = "Mac";
+    exec('open -a '.$_GET['dir'].'', $outputArray);
   }
   else{
     $os = 'linux';
   }
 
-
+  echo $os;
 
 
 
