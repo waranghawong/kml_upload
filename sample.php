@@ -7,12 +7,13 @@
 
   if(isset($_POST['submit_files'])){
     
-
+var_dump($_POST['check']);
     foreach($_POST['check'] as $checkbox){
       if($checkbox){
-        $a = substr($checkbox, 3);
-        exec('c:\WINDOWS\system32\cmd.exe /c START '.$a.'');
-        header("location: administrator/index.php");
+
+         $a = substr($checkbox, 3);
+         echo $a;
+        // exec('c:\WINDOWS\system32\cmd.exe /c START '.$a.'');
       }
     }
 

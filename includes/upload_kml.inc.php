@@ -25,3 +25,26 @@ if(isset($_POST['submit_button'])){
     $address = $region_text.' '.$barangay_text.' '.$city_text.' '.$province_text;
     $markers->uploadKMS($_FILES['upload_kml'],$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks);
 }
+
+
+if(isset($_POST['submit_rmd_button'])){
+    $date = $_POST['date'];
+    $time = $_POST['time'];
+    $frequency = $_POST['frequency'];
+    $clarity = $_POST['clarity'];
+    $direction = $_POST['direction'];
+    $subject = $_POST['subject'];
+    $callsign = $_POST['callsign'];
+    $reciever = $_POST['reciever'];
+    $fc = $_POST['fc'];
+    $src = $_POST['src'];
+    $region_text = $_POST['region_text'];
+    $province_text = $_POST['province_text'];
+    $city_text = $_POST['city_text'];
+    $barangay_text = $_POST['barangay_text'];
+    $grid = $_POST['grid'];
+
+    $address = $region_text.' '.$barangay_text.' '.$city_text.' '.$province_text;
+
+    $markers->insertRMD($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid);
+}

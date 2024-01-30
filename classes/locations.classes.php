@@ -45,6 +45,7 @@ class locations extends db{
         }
 
     }
+
     protected function getAllKMSFile(){
         $connection = $this->dbOpen();
         $stmt = $connection->prepare("SELECT * FROM kml_file");
@@ -54,6 +55,31 @@ class locations extends db{
             // return json_encode($stmt->fetchall());
             return $stmt->fetchall();
         } 
+    }
+
+    protected function setRMD($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid){
+        $datetimetoday = date("Y-m-d H:i:s");
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare('INSERT INTO rmd_record (frequency, clarity, direction, subject, callsign, reciever, fc, src, barangay, municipality, province, date,time , grid_coordinate ,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+
+        if(!$stmt->execute([$frequency, $clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $date, $time,$grid, $datetimetoday])){
+            $stmt = null;
+            header ("location: ../index.php?errors=stmtfailed");
+            exit();
+        }
+        else{
+            header('location: ../administrator/index.php');
+        }
+    }
+
+    protected function getRmdRecord(){
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare("SELECT * FROM rmd_record");
+        $stmt->execute();
+
+        if($stmt->rowCount() > 0){
+            return $stmt->fetchall();
+        }
     }
 }
 

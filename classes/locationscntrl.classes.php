@@ -132,9 +132,19 @@ class locationsCntrl extends locations{
     }
 
     public function uploadKMS($file,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks){
-        
+
         $target_dir = "../kml_files/";
-        $target_file =  $target_dir . basename($file["name"]);
+        if ($file['name'] == trim($file['name']) && str_contains($file['name'], ' ')) {
+            $new_name = str_replace(' ', '_', $file['name']);
+
+            $target_file =  $target_dir . basename($new_name);
+        }
+        else{
+            $target_file =  $target_dir . basename($file["name"]);
+        }
+        
+
+       
         $uploadOk = 1;
 
         if(file_exists($target_file)) {
@@ -143,6 +153,7 @@ class locationsCntrl extends locations{
         }
 
         if($uploadOk = 1){
+            
             if (move_uploaded_file($file["tmp_name"], $target_file)) {
                 // echo "The file ". htmlspecialchars( basename( $file["name"])). " has been uploaded.";
                 return $this->insertKMSFILE($target_file,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks);
@@ -152,6 +163,10 @@ class locationsCntrl extends locations{
         }
        
        
+    }
+
+    public function insertRMD($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid){
+        return $this->setRMD($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid);
     }
 
     function random_string($length = 10) {
@@ -167,6 +182,10 @@ class locationsCntrl extends locations{
 
     public function getKMS(){
         return $this->getAllKMSFile();
+    }
+
+    public function getRMD(){
+        return $this->getRmdRecord();
     }
 
 

@@ -135,7 +135,6 @@ if(isset($user)){
                                     <th class="column-title">Address </th>
                                     <th class="column-title">Remarks </th>
                                     <th class="column-title">Kml/kmz files </th>
-                                    <th class="column-title no-link last"><span class="nobr">Action</span></th>
                                     <th class="bulk-actions" colspan="16">
                                       <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
                                     </th>
@@ -166,7 +165,6 @@ if(isset($user)){
                                           echo ' <td>'.$row['address'].'</td>';
                                           echo ' <td>'.$row['remarks'].'</td>';
                                           echo '  <td><a href="../sample.php?dir='.substr($row['dir'], 3).'" target="_blank"><i class="fa fa-globe"></i>open</a></td>';
-                                          echo '   <td class=" last"><a href="#">View</a></td>';
                                           echo '</tr>';
                                       }
                                       
@@ -183,7 +181,7 @@ if(isset($user)){
                       </div>
                       <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><br>
                           <div class="table-responsive">
-                            <table class="table table-striped jambo_table bulk_action">
+                            <table class="table table-striped jambo_table bulk_action" id="tbl_rmd">
                               <thead>
                                 <tr class="headings">
                                   <th class="column-title">NR </th>
@@ -201,7 +199,6 @@ if(isset($user)){
                                   <th class="column-title">Municipality </th>
                                   <th class="column-title">Province </th>
                                   <th class="column-title">Grid Coordinate </th>
-                                  <th class="column-title no-link last"><span class="nobr">Action</span>
                                   
                                   </th>
                                   <th class="bulk-actions" colspan="16">
@@ -211,44 +208,35 @@ if(isset($user)){
                               </thead>
 
                               <tbody>
-                                <tr class="even pointer">
-                                  <td class=" ">121000040</td>
-                                  <td class=" ">May 23, 2014 11:47:56 PM </td>
-                                  <td class=" ">121000210 <i class="success fa fa-long-arrow-up"></i></td>
-                                  <td class=" ">John Blank L</td>
-                                  <td class=" ">John Blank L</td>
-                                  <td class=" ">John Blank L</td>
-                                  <td class=" ">John Blank L</td>
-                                  <td class=" ">John Blank L</td>
-                                  <td class=" ">John Blank L</td>
-                                  <td class=" ">Paid</td>
-                                  <td class=" ">Paid</td>
-                                  <td class=" ">Paid</td>
-                                  <td class=" ">Paid</td>
-                                  <td class=" ">Paid</td>
-                                  <td class="a-right a-right ">$7.45</td>
-                                  <td class=" last"><a href="#">View</a></td>
-                                
-                                </tr>
-                                <tr class="odd pointer">
-                                    <td class=" ">121000040</td>
-                                    <td class=" ">May 23, 2014 11:47:56 PM </td>
-                                    <td class=" ">121000210 <i class="success fa fa-long-arrow-up"></i></td>
-                                    <td class=" ">John Blank L</td>
-                                    <td class=" ">John Blank L</td>
-                                    <td class=" ">John Blank L</td>
-                                    <td class=" ">John Blank L</td>
-                                    <td class=" ">John Blank L</td>
-                                    <td class=" ">John Blank L</td>
-                                    <td class=" ">Paid</td>
-                                    <td class=" ">Paid</td>
-                                    <td class=" ">Paid</td>
-                                    <td class=" ">Paid</td>
-                                    <td class=" ">Paid</td>
-                                    <td class="a-right a-right ">$7.45</td>
-                                    <td class=" last"><a href="#">View</a></td>
-                                  
-                                  </tr>
+                                <?php
+                                  $a = 0;
+                                    
+                                    if($saved_locations->getRMD() == false){
+                                        echo 'no data';
+                                    }
+                                    else{
+                                        foreach($saved_locations->getRMD() as $row){
+                                            echo '<tr>';
+                                            echo ' <td>'.$a++.'</td>';
+                                            echo ' <td>'.$row['date'].'</td>';
+                                            echo ' <td>'.$row['time'].'</td>';
+                                            echo ' <td>'.$row['frequency'].'</td>';
+                                            echo ' <td>'.$row['clarity'].'</td>';
+                                            echo ' <td>'.$row['direction'].'</td>';
+                                            echo ' <td>'.$row['subject'].'</td>';
+                                            echo ' <td>'.$row['callsign'].'</td>';
+                                            echo ' <td>'.$row['reciever'].' '.$row['time'].'</td>';
+                                            echo ' <td>'.$row['fc'].'</td>';
+                                            echo ' <td>'.$row['src'].'</td>';
+                                            echo ' <td>'.$row['barangay'].'</td>';
+                                            echo ' <td>'.$row['municipality'].'</td>';
+                                            echo ' <td>'.$row['province'].'</td>';
+                                            echo ' <td>'.$row['grid_coordinate'].'</td>';
+                                            echo '</tr>';
+                                        }
+                                        
+                                    }
+                                  ?>
                               </tbody>
                             </table>
                         </div>
@@ -279,33 +267,33 @@ if(isset($user)){
                   <div class="row">
                     <div class="col-md-12">
                       <div class="x_panel">
-                      <form method="POST" action="includes/upload_kml.inc.php" enctype="multipart/form-data">
+                      <form method="POST" action="../includes/upload_kml.inc.php" enctype="multipart/form-data">
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="Name">Date</label>
+                                <label for="date">Date</label>
                                 <input type="date" class="form-control" name="date">
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="user_email">Time</label>
+                                <label for="time">Time</label>
                                 <input type="time" class="form-control" name="time">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="user_email">Frequency</label>
+                            <label for="frequency">Frequency</label>
                             <input type="text" class="form-control" name="frequency">
                         </div>
                         <div class="form-group">
-                            <label for="user_email">Clarity</label>
+                            <label for="clarity">Clarity</label>
                             <input type="text" class="form-control" name="clarity">
                         </div>
                         <div class="form-group">
-                            <label for="user_email">Direction</label>
+                            <label for="direction">Direction</label>
                             <input type="text" class="form-control" name="direction">
                         </div>
                         <p id="conpasscheck" style="color: red;"></p>
                         <div class="form-group">
-                            <label for="user_email">Subject/Convo</label>
-                            <input type="email" class="form-control" name="subject">
+                            <label for="subject">Subject/Convo</label>
+                            <input type="text" class="form-control" name="subject">
                         </div>
                         <div class="form-group">
                             <label for="inputAddress2">Callsign</label>
@@ -343,6 +331,10 @@ if(isset($user)){
                             <select id="barangay" class="form-control"></select>
                             <input type="hidden" name="barangay_text" id="barangay-text">
                         </div>
+                        <div class="form-group">
+                            <label for="grid">Grid Coordinates</label>
+                            <input type="text" class="form-control" name="grid">
+                        </div>
                         
                     
                       </div>               
@@ -350,7 +342,7 @@ if(isset($user)){
                  </div>
               </div>
               <div class="modal-footer">
-                <button type="button" name="submit_button" class="btn btn-primary">Save</button>
+                <button type="submit" name="submit_rmd_button" class="btn btn-primary">Save</button>
               </div>
               </form>
             </div>
@@ -490,6 +482,8 @@ if(isset($user)){
     <script src="https://f001.backblazeb2.com/file/buonzz-assets/jquery.ph-locations-v1.0.0.js"></script>
     <script src="../src/js/ph-address-selector.js"></script>
     <script>
+      $('#example').DataTable();
+      $('#tbl_rmd').DataTable();
       function selector(){
         document.getElementById('add_button').setAttribute('onclick','addSelector()')
       }
