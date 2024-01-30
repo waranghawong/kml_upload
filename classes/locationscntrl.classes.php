@@ -131,7 +131,7 @@ class locationsCntrl extends locations{
             echo $kmlOutput;
     }
 
-    public function uploadKMS($file, $name, $description){
+    public function uploadKMS($file,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks){
         
         $target_dir = "../kml_files/";
         $target_file =  $target_dir . basename($file["name"]);
@@ -145,7 +145,7 @@ class locationsCntrl extends locations{
         if($uploadOk = 1){
             if (move_uploaded_file($file["tmp_name"], $target_file)) {
                 // echo "The file ". htmlspecialchars( basename( $file["name"])). " has been uploaded.";
-                return $this->insertKMSFILE($target_file, $name, $description);
+                return $this->insertKMSFILE($target_file,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks);
               } else {
                 header("location: ../index.php?error=there_was_a_problem_uploading_your_file");
               }

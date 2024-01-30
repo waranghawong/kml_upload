@@ -4,9 +4,9 @@
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu "style="display: block;">
-                      <li><a href="index.html">SIGINT</a></li>
-                      <li><a href="index2.html">GEOINT</a></li>
-                      <li><a href="index3.html">CADO</a></li>
+                      <li><a href="sigint.php">SIGINT</a></li>
+                      <li><a href="geoint.php">GEOINT</a></li>
+                      <li><a href="cado.php">CADO</a></li>
                     </ul>
                   </li>
                 </ul>

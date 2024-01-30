@@ -30,18 +30,18 @@ class locations extends db{
         }
     }
 
-    protected function insertKMSFILE($file, $name, $description){
+    protected function insertKMSFILE($file,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks){
         $datetimetoday = date("Y-m-d H:i:s");
         $connection = $this->dbOpen();
-        $stmt = $connection->prepare('INSERT INTO kml_file (name, description, location ,created_at) VALUES (?,?,?,?)');
+        $stmt = $connection->prepare('INSERT INTO kml_file (name, company, address, position, unit, selector_name, imsi, imei, lac_cid, remarks,date, time ,dir ,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
 
-        if(!$stmt->execute([ $name, $description,$file, $datetimetoday])){
+        if(!$stmt->execute([ $name, $company, $address, $position, $unit, $selector_name, $imsi, $imei,$lac_cid, $remarks, $date, $time,$file, $datetimetoday])){
             $stmt = null;
             header ("location: ../index.php?errors=stmtfailed");
             exit();
         }
         else{
-            header('location: ../index.php');
+            header('location: ../administrator/index.php');
         }
 
     }
