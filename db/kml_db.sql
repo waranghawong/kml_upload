@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 20, 2024 at 07:39 AM
+-- Generation Time: Jan 30, 2024 at 07:50 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -30,8 +30,18 @@ SET time_zone = "+00:00";
 CREATE TABLE `kml_file` (
   `id` int(50) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `description` varchar(100) NOT NULL,
-  `location` varchar(100) NOT NULL,
+  `company` varchar(100) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `position` varchar(50) NOT NULL,
+  `dir` varchar(100) NOT NULL,
+  `unit` varchar(50) NOT NULL,
+  `selector_name` varchar(50) NOT NULL,
+  `imsi` varchar(100) NOT NULL,
+  `imei` varchar(100) NOT NULL,
+  `lac_cid` varchar(100) NOT NULL,
+  `remarks` varchar(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `time` time NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -40,11 +50,11 @@ CREATE TABLE `kml_file` (
 -- Dumping data for table `kml_file`
 --
 
-INSERT INTO `kml_file` (`id`, `name`, `description`, `location`, `created_at`, `updated_at`) VALUES
-(2, 'sdasd', 'sdfsdf', '../kml_files/eado06ivn5index.kml', '2024-01-20 05:50:28', '2024-01-20 04:50:28'),
-(3, 'asdasdas', 'fsdfsdfsdf', '../kml_files/6m92s8k2l6index.kml', '2024-01-20 05:55:42', '2024-01-20 04:55:42'),
-(4, 'ghfghfghfgh', 'agergerg', '../kml_files/pglm33bmhpindex.kml', '2024-01-20 05:55:50', '2024-01-20 04:55:50'),
-(5, 'hehe', 'dsdfsdf', '../kml_files/tw9af0cx46index.kml', '2024-01-20 06:17:47', '2024-01-20 05:17:47');
+INSERT INTO `kml_file` (`id`, `name`, `company`, `address`, `position`, `dir`, `unit`, `selector_name`, `imsi`, `imei`, `lac_cid`, `remarks`, `date`, `time`, `created_at`, `updated_at`) VALUES
+(10, 'poiont 1', 'dsfasdf', '', '', '../kml_files/5_6145352096037211692.kml', '', '', '', '', '', '', NULL, '00:00:00', '2024-01-20 13:53:06', '2024-01-20 12:53:06'),
+(11, 'pointg 3', 'jhglhk', '', '', '../kml_files/index.kml', '', '', '', '', '', '', NULL, '00:00:00', '2024-01-20 14:55:14', '2024-01-20 13:55:14'),
+(12, 'adsf', 'wefasdf', '', '', '../kml_files/user-map.php', '', '', '', '', '', '', NULL, '00:00:00', '2024-01-25 08:23:46', '2024-01-25 07:23:46'),
+(13, 'awef', 'sdga', 'Region VIII (Eastern Visayas)  Maslog Eastern Samar', 'asfwef', '../kml_files/rzks9qehznindex.kml', 'af', 'wefaqwf', 'sdfawe', 'fawefa', 'sdfaf', 'sdfasdfasd', '2024-01-19', '02:26:00', '2024-01-30 04:26:32', '2024-01-30 03:26:32');
 
 -- --------------------------------------------------------
 
@@ -72,6 +82,30 @@ INSERT INTO `markers` (`id`, `name`, `address`, `lat`, `lng`, `type`, `created_a
 (2, 'fghdfghdfgh', 'Region Cagayan Abbeg Alcala Cagayan', 13.133535, 123.713539, NULL, '2024-01-20 03:36:21', '2024-01-20 02:36:21'),
 (3, 'gadfgasdfasdf', 'Region I (Ilocos Region) Bagbagotot Banayoyo Ilocos Sur', 13.115305, 123.750816, NULL, '2024-01-20 03:37:23', '2024-01-20 02:37:54');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(100) NOT NULL,
+  `first_name` varchar(100) NOT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `role` int(1) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `username`, `password`, `role`, `created_at`, `updated_at`) VALUES
+(1, 'admin', 'admin', 'admin', 'admin', 0, '2024-01-29 15:37:17', '2024-01-29 14:42:58');
+
 --
 -- Indexes for dumped tables
 --
@@ -89,6 +123,12 @@ ALTER TABLE `markers`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -96,13 +136,19 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `kml_file`
 --
 ALTER TABLE `kml_file`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `markers`
 --
 ALTER TABLE `markers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
