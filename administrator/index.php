@@ -373,6 +373,13 @@ if(isset($user)){
                             <div class="form-group">
                                 <label for="company">Company</label>
                                 <input type="text" class="form-control" name="company">
+                                <select name="company" class="form-control">
+                                  <option value="SRC1">SRC1</option>
+                                  <option value="SRC2">SRC2</option>
+                                  <option value="SRC3">SRC3</option>
+                                  <option value="SRC4">SRC4</option>
+                                  <option value="SRC5">SRC5</option>
+                                </select>
                             </div>
                         <div class="form-group">
                             <label for="name">Name/Alias</label>
