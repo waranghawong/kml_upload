@@ -114,11 +114,23 @@ if(isset($user)){
                     </ul>
                     <div class="tab-content" id="myTabContent">
                       <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"><br>
+                                   
                         <div class="table-responsive">
                           <form method="POST" action="../sample.php">
                               <table class="table table-striped jambo_table bulk_action" id="example">
                                 <thead>
                                   <tr class="headings">
+                                  <div class="category-filter col-sm-12">
+                                      <select id="categoryFilter" class="form-control">
+                                        <option value="">All</option>
+                                        <option value="SRC1">SRC1</option>
+                                        <option value="SRC2">SRC2</option>
+                                        <option value="SRC3">SRC3</option>
+                                        <option value="SRC4">SRC4</option>
+                                        <option value="SRC5">SRC5</option>
+                                      </select>
+                                    </div>
+                                 
                                   <th>
                                     <input type="checkbox" id="check-all" class="flat">
                                   </th>
@@ -489,8 +501,46 @@ if(isset($user)){
     <script src="https://f001.backblazeb2.com/file/buonzz-assets/jquery.ph-locations-v1.0.0.js"></script>
     <script src="../src/js/ph-address-selector.js"></script>
     <script>
-      $('#example').DataTable();
-      $('#tbl_rmd').DataTable();
+       $("document").ready(function () {
+
+        $('#tbl_rmd').DataTable();
+        $('#example').dataTable({
+          "searching": true
+        });
+
+        var table = $('#example').DataTable();
+
+        $("#example_length").append($("#categoryFilter"));
+        $("#asd").append($("#categoryFilter"));
+
+        var categoryIndex = 0;
+        $("#example th").each(function (i) {
+          if ($($(this)).html() == "Company") {
+            categoryIndex = i; return false;
+          }
+        });
+
+        $.fn.dataTable.ext.search.push(
+        function (settings, data, dataIndex) {
+          var selectedItem = $('#categoryFilter').val()
+          var category = data[categoryIndex];
+          if (selectedItem === "" || category.includes(selectedItem)) {
+            return true;
+          }
+          return false;
+        }
+      );
+
+      $("#categoryFilter").change(function (e) {
+        table.draw();
+      });
+
+      table.draw();
+
+
+       })
+      
+
       function selector(){
         document.getElementById('add_button').setAttribute('onclick','addSelector()')
       }
