@@ -20,15 +20,15 @@ class Login extends DB {
         $password = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $pass1 = md5($pwd);
         $pass = $password[0]['password'];
-        if($pass != $pwd){
+        if($pass != $pass1){
             $stmt = null;
             header("location: ../login.php?error=wrong_password");
             exit();
         } 
 
-        elseif($pwd == $pass){
+        elseif($pass1 == $pass){
             $stmt = $con->prepare("SELECT *  FROM  users WHERE username = ? and password = ?");
-            if(!$stmt->execute(array($username, $pwd))){
+            if(!$stmt->execute(array($username, $pass1))){
                 $stmt = null;
                 header("location: ../login.php?error=stmt_failed");
                 exit();
@@ -41,7 +41,6 @@ class Login extends DB {
                 
             $user = $stmt->fetch();
             if($stmt->rowCount() > 0){
-                var_dump($user['role']);
                 if($user['role'] == 0){
                     $admin = new StartSession($user);
                     header("location: ../administrator/index.php");

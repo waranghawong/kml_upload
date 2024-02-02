@@ -3,6 +3,7 @@
 class locationsCntrl extends locations{
 
     public function setlocations(){
+        
         if(isset($_POST['add_location'])) {
             $name=  $_POST['name'];
             $lat = $_POST['lat'];

@@ -384,7 +384,6 @@ if(isset($user)){
                             </div>
                             <div class="form-group">
                                 <label for="company">Company</label>
-                                <input type="text" class="form-control" name="company">
                                 <select name="company" class="form-control">
                                   <option value="SRC1">SRC1</option>
                                   <option value="SRC2">SRC2</option>
@@ -511,7 +510,7 @@ if(isset($user)){
         var table = $('#example').DataTable();
 
         $("#example_length").append($("#categoryFilter"));
-        $("#asd").append($("#categoryFilter"));
+    
 
         var categoryIndex = 0;
         $("#example th").each(function (i) {
