@@ -17,4 +17,5 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
     
