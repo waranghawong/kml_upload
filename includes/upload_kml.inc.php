@@ -48,3 +48,33 @@ if(isset($_POST['submit_rmd_button'])){
 
     $markers->insertRMD($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid);
 }
+
+if(isset($_POST['mia_submit_button'])){
+    $target_name = $_POST['target_name'];
+    $phone_number = $_POST['phone_number'];
+    $msisdn = $_POST['msisdn'];
+    $imei = $_POST['imei'];
+    $imsi = $_POST['imsi'];
+    $tmsi = $_POST['tmsi'];
+    $operator = $_POST['operator'];
+    $call = $_POST['call'];
+    $sms = $_POST['sms'];
+    $identities = $_POST['identities'];
+    $event = $_POST['event'];
+    $last_activity = $_POST['last_activity'];
+
+
+    $markers->insertMIA($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity);
+}
+
+if(isset($_POST['liberty_submit_button'])){
+    $name = $_POST['name'];
+    $sim = $_POST['sim'];
+    $supplier = $_POST['supplier'];
+    $imsi = $_POST['imsi'];
+    $imei = $_POST['imei'];
+    $model = $_POST['model'];
+    $phone_number = $_POST['phone_number'];
+
+    $markers->insertLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number);
+}

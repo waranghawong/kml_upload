@@ -102,6 +102,12 @@ if(isset($user)){
                       <li class="nav-item mr-1">
                         <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" onclick="rmd()">RMD</a>
                       </li>
+                      <li class="nav-item mr-1">
+                        <a class="nav-link" id="mia-tab" data-toggle="tab" href="#mia" role="tab" aria-controls="mia" aria-selected="false" onclick="mia()">MIA</a>
+                      </li>
+                      <li class="nav-item mr-1">
+                        <a class="nav-link" id="liberty-tab" data-toggle="tab" href="#liberty" role="tab" aria-controls="liberty" aria-selected="false" onclick="liberty()">Liberty</a>
+                      </li>
                       <li class="nav-item ml-auto">
                       <div class="input-group">
                           <input type="text" class="form-control" placeholder="Search for...">
@@ -189,7 +195,6 @@ if(isset($user)){
                             <button type="submit" name="submit_files" class="btn btn-sm btn-round btn-secondary"> Go </button>
                           </form>
                         </div>
-                        
                       </div>
                       <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><br>
                           <div class="table-responsive">
@@ -253,6 +258,117 @@ if(isset($user)){
                             </table>
                         </div>
                       </div>
+                      
+                      <div class="tab-pane show" id="mia" role="tabpanel" aria-labelledby="mia-tab"><br>
+                          <div class="table-responsive">
+                            <table class="table table-striped jambo_table bulk_action" id="tbl_mia">
+                              <thead>
+                                <tr class="headings">
+                                  <th class="column-title"># </th>
+                                  <th class="column-title">Target Name</th>
+                                  <th class="column-title">Phonenumber</th>
+                                  <th class="column-title">MSISDN</th>
+                                  <th class="column-title">IMEI</th>
+                                  <th class="column-title">IMSI</th>
+                                  <th class="column-title">TMSI</th>
+                                  <th class="column-title">Call</th>
+                                  <th class="column-title">SMS </th>
+                                  <th class="column-title">Identities </th>
+                                  <th class="column-title">Event </th>
+                                  <th class="column-title">Last Activity </th>
+                                  
+                                  </th>
+                                  <th class="bulk-actions" colspan="16">
+                                    <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                                  </th>
+                                </tr>
+                              </thead>
+
+                              <tbody>
+                                <?php
+                                  $a = 0;
+                                    
+                                    if($saved_locations->getMia() == false){
+                                        echo 'no data';
+                                    }
+                                    else{
+                                        foreach($saved_locations->getMia() as $row){
+                                            echo '<tr>';
+                                            echo ' <td>'.$a++.'</td>';
+                                            echo ' <td>'.$row['target_name'].'</td>';
+                                            echo ' <td>'.$row['phone_number'].'</td>';
+                                            echo ' <td>'.$row['msisdn'].'</td>';
+                                            echo ' <td>'.$row['imei'].'</td>';
+                                            echo ' <td>'.$row['imsi'].'</td>';
+                                            echo ' <td>'.$row['operator'].'</td>';
+                                            echo ' <td>'.$row['mia_call'].'</td>';
+                                            echo ' <td>'.$row['mia_sms'].'</td>';
+                                            echo ' <td>'.$row['identities'].'</td>';
+                                            echo ' <td>'.$row['event'].'</td>';
+                                            echo ' <td>'.$row['last_activity'].'</td>';
+                                            echo '</tr>';
+                                        }
+                                        
+                                    }
+                                  ?>
+                              </tbody>
+                            </table>
+                        </div>
+                      </div>
+
+                      <div class="tab-pane show" id="liberty" role="tabpanel" aria-labelledby="liberty-tab"><br>
+                          <div class="table-responsive">
+                            <table class="table table-striped jambo_table bulk_action" id="tbl_mia">
+                              <thead>
+                                <tr class="headings">
+                                  <th class="column-title"># </th>
+                                  <th class="column-title">Name</th>
+                                  <th class="column-title">Sim</th>
+                                  <th class="column-title">Supplier</th>
+                                  <th class="column-title">IMSI</th>
+                                  <th class="column-title">IMEI</th>
+                                  <th class="column-title">Model</th>
+                                  <th class="column-title">Phone Number</th>
+                                  <th class="column-title">Action</th>
+                                  
+                                  </th>
+                                  <th class="bulk-actions" colspan="16">
+                                    <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                                  </th>
+                                </tr>
+                              </thead>
+
+                              <tbody>
+                                <?php
+                                  $a = 0;
+                                    
+                                    if($saved_locations->getLiberty() == false){
+                                        echo 'no data';
+                                    }
+                                    else{
+                                        foreach($saved_locations->getLiberty() as $row){
+                                            echo '<tr>';
+                                            echo ' <td>'.$a++.'</td>';
+                                            echo ' <td>'.$row['name'].'</td>';
+                                            echo ' <td>'.$row['sim'].'</td>';
+                                            echo ' <td>'.$row['supplier'].'</td>';
+                                            echo ' <td>'.$row['liberty_imsi'].'</td>';
+                                            echo ' <td>'.$row['liberty_imei'].'</td>';
+                                            echo ' <td>'.$row['model'].'</td>';
+                                            echo ' <td>'.$row['phone_number'].'</td>';
+                                            echo ' <td></td>';
+                                            echo '</tr>';
+                                        }
+                                        
+                                    }
+                                  ?>
+                              </tbody>
+                            </table>
+                        </div>
+                      </div>
+
+
+
                     </div>
                   </div>
                 </div>
@@ -469,6 +585,142 @@ if(isset($user)){
 
         <!-- end selector modal -->
 
+         <!-- start mia modal -->
+
+         <div class="modal fade add_mia" tabindex="-1" id="add_mia" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add MIA</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="x_panel">
+                      <form method="POST" action="../includes/upload_kml.inc.php" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="target_name">Target Name</label>
+                                <input type="text" class="form-control" name="target_name">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone_number">Phone Number</label>
+                                <input type="text" class="form-control" name="phone_number">
+                            </div>
+                        <div class="form-group">
+                            <label for="msisdn">MSISDN</label>
+                            <input type="text" class="form-control" name="msisdn">
+                        </div>
+                        <div class="form-group">
+                            <label for="imei">IMEI</label>
+                            <input type="text" class="form-control" name="imei">
+                        </div>
+                        <div class="form-group">
+                            <label for="imsi">IMSI</label>
+                            <input type="text" class="form-control" name="imsi">
+                        </div>
+                        <div class="form-group">
+                            <label for="tmsi">TMSI</label>
+                            <input type="text" class="form-control" name="tmsi">
+                        </div>
+                        <div class="form-group">
+                            <label for="operator">Operator</label>
+                            <input type="text" class="form-control" name="operator">
+                        </div>
+                        <div class="form-group">
+                            <label for="call">Call</label>
+                            <input type="text" class="form-control" name="call">
+                        </div>
+                        <div class="form-group">
+                            <label for="sms">SMS</label>
+                            <input type="text" class="form-control" name="sms">
+                        </div>
+                        <div class="form-group">
+                            <label for="identities">Identities</label>
+                            <input type="text" class="form-control" name="identities">
+                        </div>
+                        <div class="form-group">
+                            <label for="event">Event</label>
+                            <input type="text" class="form-control" name="event">
+                        </div>
+                        <div class="form-group">
+                            <label for="last_activity">Last Activity</label>
+                            <input type="text" class="form-control" name="last_activity">
+                        </div>
+                    
+                      </div>               
+                    </div>
+                 </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" name="mia_submit_button" class="btn btn-primary">Save</button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- end mia modal -->
+
+      <!-- start mia modal -->
+
+      <div class="modal fade addliberty" tabindex="-1" id="addliberty" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add Liberty</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="x_panel">
+                      <form method="POST" action="../includes/upload_kml.inc.php" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" name="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="sim">Sim</label>
+                                <input type="text" class="form-control" name="sim">
+                            </div>
+                        <div class="form-group">
+                            <label for="supplier">Supplier</label>
+                            <input type="text" class="form-control" name="supplier">
+                        </div>
+                        <div class="form-group">
+                            <label for="imsi">IMSI</label>
+                            <input type="text" class="form-control" name="imsi">
+                        </div>
+                        <div class="form-group">
+                            <label for="imei">IMEI</label>
+                            <input type="text" class="form-control" name="imei">
+                        </div>
+                        <div class="form-group">
+                            <label for="model">Model</label>
+                            <input type="text" class="form-control" name="model">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone_number">Phone Number</label>
+                            <input type="text" class="form-control" name="phone_number">
+                        </div>
+                    
+                      </div>               
+                    </div>
+                 </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" name="liberty_submit_button" class="btn btn-primary">Save</button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- end mia modal -->
+
         <!-- footer content -->
         <footer>
           <div class="pull-right">
@@ -546,12 +798,24 @@ if(isset($user)){
       function rmd(){
        document.getElementById('add_button').setAttribute('onclick','addRmd()')
       }
+      function mia(){
+        document.getElementById('add_button').setAttribute('onclick','addMia()')
+      }
+      function liberty(){
+        document.getElementById('add_button').setAttribute('onclick','addLiberty()')
+      }
       function addSelector(){
         $(".add_selector_modal").modal("show");
       }
       function addRmd(){
     
         $(".add_rmd_modal").modal("show");
+      }
+      function addMia(){
+        $(".add_mia").modal("show");
+      }
+      function addLiberty(){
+        $(".addliberty").modal("show");
       }
     </script>
   </body>

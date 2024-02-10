@@ -170,6 +170,15 @@ class locationsCntrl extends locations{
         return $this->setRMD($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid);
     }
 
+    public function insertMIA($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity){
+
+       return $this->setMia($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity);
+    }
+
+    public function insertLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number){
+        return $this->setLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number);
+    }
+
     function random_string($length = 10) {
         $key = '';
         $keys = array_merge(range(0, 9), range('a', 'z'));
@@ -188,6 +197,16 @@ class locationsCntrl extends locations{
     public function getRMD(){
         return $this->getRmdRecord();
     }
+
+    public function getMia(){
+        return $this->getMiaRecord();
+    }
+
+    public function getLiberty(){
+        return $this->getLibertyRecord();
+    }
+
+
 
 
 }

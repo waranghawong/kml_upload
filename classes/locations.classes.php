@@ -81,6 +81,56 @@ class locations extends db{
             return $stmt->fetchall();
         }
     }
+
+    protected function getMiaRecord(){
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare("SELECT * FROM mia");
+        $stmt->execute();
+
+        if($stmt->rowCount() > 0){
+            return $stmt->fetchall();
+        }
+    }
+
+    protected function getLibertyRecord(){
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare("SELECT * FROM liberty");
+        $stmt->execute();
+
+        if($stmt->rowCount() > 0){
+            return $stmt->fetchall();
+        }
+    }
+
+    protected function setMia($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity){
+        $datetimetoday = date("Y-m-d H:i:s");
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare('INSERT INTO mia (target_name, phone_number, msisdn, imei, imsi, tmsi, operator, mia_call, mia_sms, identities, event, last_activity,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)');
+
+        if(!$stmt->execute([$target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity, $datetimetoday])){
+            $stmt = null;
+            header ("location: ../administrator/geoint.php?errors=stmtfailed");
+            exit();
+        }
+        else{
+            header('location: ../administrator/geoint.php');
+        }
+    }
+
+    protected function setLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number){
+        $datetimetoday = date("Y-m-d H:i:s");
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare('INSERT INTO liberty (name, sim, supplier, liberty_imsi, liberty_imei, model, phone_number,created_at) VALUES (?,?,?,?,?,?,?,?)');
+
+        if(!$stmt->execute([$name, $sim, $supplier,$imsi, $imei,$model, $phone_number, $datetimetoday])){
+            $stmt = null;
+            header ("location: ../administrator/index.php?errors=stmtfailed");
+            exit();
+        }
+        else{
+            header('location: ../administrator/sigint.php');
+        }
+    }
 }
 
 
