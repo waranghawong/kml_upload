@@ -11,27 +11,28 @@ $users->setUsers();
 
 
 if(isset($_GET['delete_user'])){
-    $users->deleteSubAdmin($_GET['delete_user']);
+    $users->deleteUser($_GET['delete_user']);
     
 }
 
 if(isset($_GET['userid'])){
-    $users->getSubAdmin($_GET['userid']);
+    $users->getUser($_GET['userid']);
     
 }
 
 if(isset($_POST['btn_edit_submit'])){
-   $first_name = $_POST['edit_first_name'];
-   $last_name = $_POST['edit_last_name'];
-   $password =$_POST['edit_user_password'];
-   $email = $_POST['edit_user_email'];
-   $address = $_POST['edit_user_address'];
-   $sub_id = $_POST['sub_id'];
+   $user_id = $_POST['user_id'];
+   $name = $_POST['name'];
+   $username = $_POST['username'];
+   $password =$_POST['password'];
+   $code = $_POST['code'];
+   $unit = $_POST['unit'];
+   $age = $_POST['age'];
+   $sex = $_POST['sex'];
 
-    $subadmin_sttngs = $_POST['subadmin_sttngs'];
 
 
-    $users->updateSubAdmin($first_name, $last_name, $password, $email, $address, $subadmin_sttngs,$sub_id);
+   $users->updateUSer($name, $username, $password, $code, $unit, $age, $sex,$user_id);
     
 }
 

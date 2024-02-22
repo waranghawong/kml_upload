@@ -48,7 +48,7 @@ class Login extends DB {
                 }
                 elseif($user['role'] == 1){
                     $admin = new StartSession($user);
-                    header("location: ../geoint/index.php");
+                    header("location: ../cado/index.php");
                 }
                 elseif($user['role'] == 2){
                         $admin = new StartSession($user);
@@ -56,7 +56,7 @@ class Login extends DB {
                 }
                 else{
                     $admin = new StartSession($user);
-                    header("location: ../cado/index.php");
+                    header("location: ../geoint/index.php");
                 }
         
             }

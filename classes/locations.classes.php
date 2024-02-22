@@ -82,6 +82,70 @@ class locations extends db{
         }
     }
 
+    protected function getSelectedRmd($id){
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare("SELECT * FROM rmd_record WHERE id = ?");
+        $stmt->execute([$id]);
+
+        $data = $stmt->fetchall();
+        $total = $stmt->rowCount();
+
+        if($total > 0){
+            return $data;
+        }
+        else{
+            return false;
+        }
+    }
+
+    protected function getSelectorRecord($id){
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare("SELECT * FROM kml_file WHERE id = ?");
+        $stmt->execute([$id]);
+
+        $data = $stmt->fetchall();
+        $total = $stmt->rowCount();
+
+        if($total > 0){
+            return $data;
+        }
+        else{
+            return false;
+        } 
+    }
+
+    protected function getSelectedMiaId($id){
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare("SELECT * FROM mia WHERE id = ?");
+        $stmt->execute([$id]);
+
+        $data = $stmt->fetchall();
+        $total = $stmt->rowCount();
+
+        if($total > 0){
+            return $data;
+        }
+        else{
+            return false;
+        }
+    }
+
+    protected function getSelectedLibertyId($id){
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare("SELECT * FROM liberty WHERE id = ?");
+        $stmt->execute([$id]);
+
+        $data = $stmt->fetchall();
+        $total = $stmt->rowCount();
+
+        if($total > 0){
+            return $data;
+        }
+        else{
+            return false;
+        } 
+    }
+
     protected function getMiaRecord(){
         $connection = $this->dbOpen();
         $stmt = $connection->prepare("SELECT * FROM mia");
@@ -130,6 +194,98 @@ class locations extends db{
         else{
             header('location: ../administrator/sigint.php');
         }
+    }
+
+    protected function updateSelector($files,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks, $id){
+        $connection = $this->dbOpen();
+        if($files != '' && $address != ''){
+            $password = md5($password);
+            $stmt = $connection->prepare("UPDATE kml_file SET name = ?, company = ?, address = ?, position = ?, unit = ?, selector_name = ?, imsi = ?, imei = ?, lac_cid = ?, remarks =? ,date = ?, time = ?,dir =? WHERE id = ?");
+            if(!$stmt->execute([$name, $company,  $address, $position ,$unit, $selector_name, $imsi, $imei, $lac_cid, $remarks, $date, $time, $files, $id])){
+                $stmt = null;
+                header("location: index.php?errors=stmtfailed");
+                exit();
+            }
+                header("location: ../administrator/sigint.php?success=1");
+
+        }
+        elseif($address == ''){
+            $stmt = $connection->prepare("UPDATE kml_file SET name = ?, company = ?, position = ?, unit = ?, selector_name = ?, imsi = ?, imei = ?, lac_cid = ?, remarks =? ,date = ?, time = ?, dir = ? WHERE id = ?");
+            if(!$stmt->execute([$name, $company, $position ,$unit, $selector_name, $imsi, $imei, $lac_cid, $remarks, $date, $time, $files, $id])){
+                $stmt = null;
+                header("location: index.php?errors=stmtfailed");
+                exit();
+            }
+                header("location: ../administrator/sigint.php?success=1");
+        }
+        else{
+   
+            $stmt = $connection->prepare("UPDATE kml_file SET name = ?, company = ?, address = ?, position = ?, unit = ?, selector_name = ?, imsi = ?, imei = ?, lac_cid = ?, remarks =? ,date = ?, time = ? WHERE id = ?");
+            if(!$stmt->execute([$name, $company,  $address, $position ,$unit, $selector_name, $imsi, $imei, $lac_cid, $remarks, $date, $time, $id])){
+                $stmt = null;
+                header("location: index.php?errors=stmtfailed");
+                exit();
+            }
+                header("location: ../administrator/sigint.php?success=1");
+
+        }
+    }
+
+    protected function updateMia($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity, $id){
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare("UPDATE mia SET target_name = ? , phone_number = ?, msisdn = ?, imei = ?, imsi = ?, tmsi = ?, operator = ?, mia_call = ?, mia_sms = ?, identities = ?, event = ?, last_activity = ? WHERE id = ?");
+        if(!$stmt->execute([$target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity, $id])){
+            $stmt = null;
+            header("location: index.php?errors=stmtfailed");
+            exit();
+        }
+        header("location: ../administrator/sigint.php?success=1");
+    }
+
+    protected function updateLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number, $id){
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare("UPDATE liberty SET name = ?, sim = ?, supplier = ?, liberty_imsi =?, liberty_imei = ?, model = ?, phone_number = ? WHERE id = ?");
+        if(!$stmt->execute([$name, $sim, $supplier,$imsi, $imei,$model, $phone_number, $id])){
+            $stmt = null;
+            header("location: index.php?errors=stmtfailed");
+            exit();
+        }
+        header("location: ../administrator/sigint.php?success=1");
+    }
+
+    protected function removeCurrentSelector($id){
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare("DELETE FROM kml_file WHERE id = ?");
+        $stmt->execute([$id]);
+    }
+
+    protected function removeCurrentRmd($id){
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare("DELETE FROM rmd_record WHERE id = ?");
+        $stmt->execute([$id]);
+    }
+
+    protected function removeCurrentMia($id){
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare("DELETE FROM mia WHERE id = ?");
+        $stmt->execute([$id]);
+    }
+
+    protected function removeCurrentLiberty($id){
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare("DELETE FROM liberty WHERE id = ?");
+        $stmt->execute([$id]);
+    }
+
+    protected function updateRmd($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid, $id){
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare("UPDATE rmd_record SET frequency =?, clarity=?, direction=?, subject=?, callsign=?, reciever=?, fc=?, src=?, barangay=?, municipality=?, province=?, date=?,time=? , grid_coordinate=? WHERE id = ?");
+        if(!$stmt->execute([$frequency, $clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $date, $time,$grid, $id])){
+            $stmt = null;
+            header("location: index.php?errors=stmtfailed");
+            exit();
+        }
+            header("location: ../administrator/sigint.php?success=1");
     }
 }
 

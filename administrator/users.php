@@ -49,7 +49,7 @@ if(isset($user)){
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i>94TH MICO<span></span></a>
+              <a href="index.php" class="site_title"><i class="fa fa-paw"></i>94TH MICO<span></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -120,6 +120,7 @@ if(isset($user)){
                                             <th>Unit</th>
                                             <th>Age</th>
                                             <th>Sex</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -131,13 +132,14 @@ if(isset($user)){
                                         }
                                         else{
                                             foreach($list_of_users as $row){
-                                                echo '<tr>';
+                                                echo '<tr id="records_'.$row['id'].'">';
                                                 echo ' <td>'.$a++.'</td>';
                                                 echo ' <td>'.$row['name'].'</td>';
                                                 echo ' <td>'.$row['code'].'</td>';
                                                 echo ' <td>'.($row['role'] == 1 ? "CADO" : ($row['role'] == "2" ? "SIGINT" : "GEOINT" )).'</td>';
                                                 echo ' <td>'.$row['age'].'</td>';
                                                 echo ' <td>'.$row['sex'].'</td>';
+                                                echo ' <td><button type="button" data-toggle="tooltip" data-placement="top" title="edit" onclick="editUser('.$row['id'].')" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button> <button type="button" onclick="deleteUser('.$row['id'].')" class="btn btn-sm btn-danger dlt_record" data-toggle="tooltip" data-placement="top" title="delete subject"><i class="fa fa-trash"></button></td>';
                                                 echo '</tr>';
                                             }
                                             
@@ -252,13 +254,14 @@ if(isset($user)){
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form method="post" onSubmit="if(!confirm('Is the form filled out correctly?')){return false;}" action="../includes/users.inc.php">
+                       <input type="hidden" name="user_id" value="" id="edit_user_id">
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="Name">Name</label>
@@ -272,13 +275,13 @@ if(isset($user)){
 
                             <div class="form-group col-md-12">
                                 <label for="Name">Password</label>
-                                <input type="password" class="form-control" name="password" id="" required>
+                                <input type="password" class="form-control" name="password"  id="edit_user_password" >
                                 <span id="toggleEditPassword" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                             </div>
 
                             <div class="form-group col-md-12">
                                 <label for="Name">Confirm Password</label>
-                                <input type="password" class="form-control" name="confirm_password" id="" required>
+                                <input type="password" class="form-control" name="confirm_password"  id="edit_confirm_password" >
                                 <span id="toggleConfirmEditPassword" class="fa fa-fw fa-eye-slash field-icon toggle-confirm-password"></span>
                             </div>
                             <p id="conpasscheck1" style="color: red;"></p>
@@ -304,8 +307,8 @@ if(isset($user)){
                             <div class="form-group col-md-12">
                                 <label for="Name">Sex</label>
                                 <select class="form-control" name="sex" id="sex" required>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
+                                    <option value="M">Male</option>
+                                    <option value="F">Female</option>
                                 </select>
                             </div>
 
@@ -322,6 +325,7 @@ if(isset($user)){
             </div>
         </div>
     </div>
+
 
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
@@ -345,7 +349,7 @@ if(isset($user)){
 
             $("#conpasscheck").hide();
             $("#conpasscheck1").hide();
-            $('#btn_edit_submit').hide();
+          
             $("#btn_submit").hide(); 
 
             let confirmPasswordError = true;
@@ -355,12 +359,13 @@ if(isset($user)){
             $('#user_password').keyup(function(){
                 validatePassword();
             })
-            $("#user_confirm_password").keyup(function () {
-                validateEditConfirmPassword();
-            });
             $('#edit_user_password').keyup(function(){
                 validateEditUserPassword();
             })
+
+            $("#edit_confirm_password").keyup(function () {
+            validateEditConfirmPassword();
+            });
 
 
             var table = $('#example').DataTable({
@@ -381,23 +386,47 @@ if(isset($user)){
         const password = document.querySelector("#user_password");
         const confirm_password = document.querySelector("#user_confirm_password");
 
+        const toggleEditPassword = document.querySelector("#toggleEditPassword");
+        const toggleConfirmEditPassword = document.querySelector("#toggleConfirmEditPassword");
+        const editPassword = document.querySelector("#edit_user_password");
+        const confirm_edit_password = document.querySelector("#edit_confirm_password");
+
         togglePassword.addEventListener("click", function () {
-        // toggle the type attribute
-        const type = password.getAttribute("type") === "password" ? "text" : "password";
-        password.setAttribute("type", type);
-        
-        // toggle the icon
-        this.classList.toggle("fa-eye");
+            // toggle the type attribute
+            const type = password.getAttribute("type") === "password" ? "text" : "password";
+            password.setAttribute("type", type);
+            
+            // toggle the icon
+            this.classList.toggle("fa-eye");
     
         });
         toggleConfirmPassword.addEventListener("click", function () {
-        // toggle the type attribute
-        const type = confirm_password.getAttribute("type") === "password" ? "text" : "password";
-        confirm_password.setAttribute("type", type);
-        
-        // toggle the icon
-        this.classList.toggle("fa-eye");
+            // toggle the type attribute
+            const type = confirm_password.getAttribute("type") === "password" ? "text" : "password";
+            confirm_password.setAttribute("type", type);
+            
+            // toggle the icon
+            this.classList.toggle("fa-eye");
 
+    
+        });
+
+        toggleEditPassword.addEventListener("click", function () {
+            // toggle the type attribute
+            const type = editPassword.getAttribute("type") === "password" ? "text" : "password";
+            editPassword.setAttribute("type", type);
+            
+            // toggle the icon
+            this.classList.toggle("fa-eye");
+        
+        });
+        toggleConfirmEditPassword.addEventListener("click", function () {
+            // toggle the type attribute
+            const type = confirm_edit_password.getAttribute("type") === "password" ? "text" : "password";
+            confirm_edit_password.setAttribute("type", type);
+            
+            // toggle the icon
+            this.classList.toggle("fa-eye");
     
         });
 
@@ -441,6 +470,83 @@ if(isset($user)){
                 $("#btn_submit").show();
                 $('#btn_submit').attr("disabled", false);
             }
+        }
+
+        function validateEditConfirmPassword() {
+        let confirmPasswordValue1 = $("#edit_confirm_password").val();
+        let passwordValue = $("#edit_user_password").val();
+        if (passwordValue != confirmPasswordValue1) {
+            $("#conpasscheck1").show();
+            $("#conpasscheck1").html("Password didn't Match");
+            $("#conpasscheck1").css("color", "red");
+            confirmPasswordError = false;
+            $('#btn_edit_submit').attr('disabled', 'disabled');
+            return false;
+        } else {
+            $('#btn_edit_submit').show();
+            $("#conpasscheck1").hide();
+            $('#btn_edit_submit').removeAttr("disabled");
+        }
+        // if(!passwordValue && !confirmPasswordValue1){
+        //     $('#btn_submit_edit').removeAttr("disabled");
+        // }
+    }
+
+    function validateEditUserPassword() {
+        let confirmPasswordValue1 = $("#edit_confirm_password").val();
+        let passwordValue = $("#edit_user_password").val();
+        if (passwordValue != confirmPasswordValue1) {
+            $("#conpasscheck1").show();
+            $("#conpasscheck1").html("Password didn't Match");
+            $("#conpasscheck1").css("color", "red");
+            confirmPasswordError = false;
+            $('#btn_edit_submit').attr('disabled', 'disabled');
+            return false;
+        } else {
+            $('#btn_edit_submit').show();
+            $("#conpasscheck1").hide();
+            $('#btn_edit_submit').removeAttr("disabled");
+        }
+        // if(!passwordValue && !confirmPasswordValue1){
+        //     $('#btn_submit_edit').removeAttr("disabled");
+        // }
+    }
+
+        function editUser(id){
+          $.ajax({
+                method: "get",
+                dataType: "json",
+                url: "../includes/users.inc.php?userid=" + id,
+                success: function (response){
+                $.each(response, function(index, data) {
+                        $('#edit_user_id').val(id)
+                        $('#name').val(data.name)
+                        $('#username').val(data.username)
+                        $('#code').val(data.code)
+                        $('#unit').val(data.role)
+                        $('#age').val(data.age)
+                        $('#sex').val(data.sex)
+                       
+                    });
+                }
+            })
+            // $('#prof_uid').val(prof_id);
+            $('.editUser').modal(); 
+        }
+
+        function deleteUser(id){
+          var confirmation = confirm("are you sure you want to remove the item?");
+
+            if(confirmation){
+                $.ajax({
+                    method: "get",
+                    url: "../includes/users.inc.php?delete_user=" + id,
+                    success: function (response){
+                    $("#records_"+id).remove();
+                    }
+                })
+            }
+          
         }
     </script>
   </body>

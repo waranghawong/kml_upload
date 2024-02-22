@@ -34,13 +34,13 @@ class userClass extends DB{
         }
     }
 
-    protected function delAdmin($id){
+    protected function removeCurrentUser($id){
         $connection = $this->dbOpen();
         $stmt = $connection->prepare("DELETE FROM users WHERE id = ?");
         $stmt->execute([$id]);
     }
 
-    protected function subAdmin($id){
+    protected function getCurrentUser($id){
         $connection = $this->dbOpen();
         $stmt = $connection->prepare("SELECT * FROM users WHERE id = ?");
         $stmt->execute([$id]);
@@ -56,28 +56,28 @@ class userClass extends DB{
         }
     }
 
-    protected function editSubAdmin($first_name, $last_name, $password, $email, $address, $account_restriction, $subject_restriction, $records_restriction, $sms_restriction, $barcode_restriction, $id){
+    protected function setUpdateUser($name, $username, $password, $code, $unit, $age, $sex,$user_id){
         $connection = $this->dbOpen();
         if($password != ''){
             $password = md5($password);
-            $stmt = $connection->prepare("UPDATE users SET first_name = ?, last_name = ?, email = ?, address = ?, password = ?, accounts_settings = ?, subject_setting = ?,  records_setting = ?, sms_setting = ?,barcode_setting = ? WHERE id = ?");
-            if(!$stmt->execute([$first_name, $last_name, $email,  $address, $password ,$account_restriction, $subject_restriction, $records_restriction, $sms_restriction, $barcode_restriction, $id])){
+            $stmt = $connection->prepare("UPDATE users SET name = ?, username = ?, password = ?, role = ?, code = ?, age = ?, sex = ? WHERE id = ?");
+            if(!$stmt->execute([$name, $username,  $password, $unit ,$code, $age, $sex, $user_id])){
                 $stmt = null;
                 header("location: index.php?errors=stmtfailed");
                 exit();
             }
-                header("location: ../admin_page/users.php?success=1");
+                header("location: ../administrator/users.php?success=1");
 
         }
         else{
    
-            $stmt = $connection->prepare("UPDATE users SET first_name = ?, last_name = ?, email = ?, address = ?, accounts_settings = ?, subject_setting = ?,  records_setting = ?, sms_setting = ?,barcode_setting = ? WHERE id = ?");
-            if(!$stmt->execute([$first_name, $last_name, $email,  $address, $account_restriction, $subject_restriction, $records_restriction, $sms_restriction, $barcode_restriction, $id])){
+            $stmt = $connection->prepare("UPDATE users SET name = ?, username = ?, role = ?, code = ?, age = ?, sex = ? WHERE id = ?");
+            if(!$stmt->execute([$name, $username, $unit ,$code, $age, $sex, $user_id])){
                 $stmt = null;
                 header("location: index.php?errors=stmtfailed");
                 exit();
             }
-                header("location: ../admin_page/users.php?success=1");
+                header("location: ../administrator/users.php?success=1");
 
         }
 

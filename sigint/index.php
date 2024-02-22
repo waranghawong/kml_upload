@@ -14,7 +14,7 @@ if(isset($user)){
   $name = ucfirst($user['first_name']).' ' .ucfirst($user['last_name']);
   $username = $user['username'];
   $role = $user['role'];
-  if($role == 0){ 
+  if($role == 2){ 
 
 
 ?>
@@ -57,7 +57,7 @@ if(isset($user)){
             <br />
 
             <!-- sidebar menu -->
-            <?php include "../includes/sidebar.inc.php"; ?>
+    
             <!-- /sidebar menu -->
 
           </div>

@@ -206,6 +206,88 @@ class locationsCntrl extends locations{
         return $this->getLibertyRecord();
     }
 
+    public function getRmdId($id){
+        echo json_encode($this->getSelectedRmd($id));
+    }
+
+    public function getSelectorId($id){
+        echo json_encode($this->getSelectorRecord($id));
+    }
+    public function getMiaId($id){
+        echo json_encode($this->getSelectedMiaId($id));
+    }
+
+    public function getLibertyId($id){
+        echo json_encode($this->getSelectedLibertyId($id));
+    }
+
+    public function editSelector($file,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks, $id){
+        if($file['name'] == ''){
+            return $this->updateSelector($file['name'],$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks, $id);
+        }
+        else{
+            $target_dir = "../kml_files/";
+            if ($file['name'] == trim($file['name']) && str_contains($file['name'], ' ')) {
+                $new_name = str_replace(' ', '_', $file['name']);
+    
+                $target_file =  $target_dir . basename($new_name);
+            }
+            else{
+                $target_file =  $target_dir . basename($file["name"]);
+            }
+            
+    
+           
+            $uploadOk = 1;
+    
+            if(file_exists($target_file)) {
+                $target_file  = $target_dir .$this->random_string(). basename($file["name"]);
+                $uploadOk = 1;
+            }
+    
+            if($uploadOk = 1){
+                
+                if (move_uploaded_file($file["tmp_name"], $target_file)) {
+                    // echo "The file ". htmlspecialchars( basename( $file["name"])). " has been uploaded.";
+                    return $this->updateSelector($target_file,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks,$id);
+                  } else {
+                    header("location: ../administrator/sigint.php?error=there_was_a_problem_uploading_your_file");
+                  }
+            }
+        }
+       
+    }
+
+    public function editRmd($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid, $id){
+        return $this->updateRmd($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid, $id);
+    }
+
+    public function editMia($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity, $id){
+        return $this->updateMia($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity, $id);
+    }
+
+    public function editLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number, $id){
+        return $this->updateLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number, $id);
+    }
+
+    public function deleteCurrentSelector($id){
+        $this->removeCurrentSelector($id);
+        return json_encode(array("statusCode"=>200));
+    }
+    public function deleteCurrentRmd($id){
+        $this->removeCurrentRmd($id);
+        return json_encode(array("statusCode"=>200));
+    }
+    public function deleteCurrentMia($id){
+        $this->removeCurrentMia($id);
+        return json_encode(array("statusCode"=>200));
+    }
+    public function deleteCurrentLiberty($id){
+        $this->removeCurrentLiberty($id);
+        return json_encode(array("statusCode"=>200));
+    }
+
+
 
 
 

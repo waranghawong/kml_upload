@@ -37,7 +37,7 @@ if(isset($user)){
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i>94TH MICO<span></span></a>
+            <a href="index.php" class="site_title"><i class="fa fa-paw"></i>94TH MICO<span></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -196,7 +196,7 @@ if(isset($user)){
                       </div>
                       <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><br>
                           <div class="table-responsive">
-                            <table class="table table-striped jambo_table bulk_action" id="tbl_rmd">
+                            <table class="table table-striped jambo_table bulk_action" width="100%" id="tbl_rmd">
                               <thead>
                                 <tr class="headings">
                                   <th class="column-title">NR </th>
