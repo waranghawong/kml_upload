@@ -285,6 +285,7 @@ if(isset($user)){
                       <div class="x_panel">
                       <form method="POST" action="../includes/cado.inc.php" enctype="multipart/form-data">
                       <input type="hidden" class="form-control" name="osint_id" id="osint_id">
+                      <input type="hidden" class="form-control" name="user_role" value="cado" id="osint_id">
                         <div class="form-group">
                             <label for="date">Date</label>
                             <input type="date" class="form-control" name="date" id="osint-date">
@@ -407,7 +408,8 @@ if(isset($user)){
                     <div class="col-md-12">
                       <div class="x_panel">
                       <form method="POST" action="../includes/cado.inc.php" enctype="multipart/form-data">
-                      <input type="hiddent" class="form-control" name="wacom_id" id="wacom_id">
+                      <input type="hidden" class="form-control" name="wacom_id" id="wacom_id">
+                      <input type="hidden" class="form-control" name="user_role" value="cado" id="osint_id">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="first_name">First Name</label>

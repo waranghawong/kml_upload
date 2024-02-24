@@ -1,9 +1,10 @@
 <?php
 include "../classes/userContr.classes.php";
 include '../classes/db.php';
-include '../classes/locations.classes.php';
-include '../classes/locationscntrl.classes.php';
-$saved_locations = new locationsCntrl();
+include '../classes/geoint.classes.php';
+include '../classes/geoint-cntrl.classes.php';
+
+$tol_area = new geoIntCntrller();
 
 $userdata = new UserCntr();
 $user = $userdata->get_userdata();
@@ -14,7 +15,7 @@ if(isset($user)){
   $name = ucfirst($user['first_name']).' ' .ucfirst($user['last_name']);
   $username = $user['username'];
   $role = $user['role'];
-  if($role == 0){ 
+  if($role == '0'){ 
 
 
 ?>
@@ -37,7 +38,7 @@ if(isset($user)){
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-            <a href="index.php" class="site_title"><i class="fa fa-paw"></i>94TH MICO<span></span></a>
+              <a href="index.html" class="site_title"><i class="fa fa-paw"></i>94TH MICO<span></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -57,7 +58,7 @@ if(isset($user)){
             <br />
 
             <!-- sidebar menu -->
-            <?php include "../includes/sidebar.inc.php"; ?>
+      
             <!-- /sidebar menu -->
 
           </div>
@@ -97,26 +98,29 @@ if(isset($user)){
 
                     <ul class="nav nav-tabs bar_tabs" style="border-style: none;" id="myTab" role="tablist">
                       <li class="nav-item mr-1">
-                        <a class="nav-link " id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" onclick="selector()">SELECTOR</a>
+                        <a class="nav-link active" id="TOL-tab" data-toggle="tab" href="#TOL" role="tab" aria-controls="TOL" aria-selected="true" onclick="tol()">TOL area</a>
                       </li>
                       <li class="nav-item mr-1">
-                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" onclick="rmd()">RMD</a>
+                        <a class="nav-link" id="ISR-tab" data-toggle="tab" href="#ISR" role="tab" aria-controls="ISR" aria-selected="false" onclick="isr()">ISR report</a>
                       </li>
                       <li class="nav-item mr-1">
-                        <a class="nav-link active" id="mia-tab" data-toggle="tab" href="#mia" role="tab" aria-controls="mia" aria-selected="false" onclick="mia()">MIA</a>
+                        <a class="nav-link" id="Prof-tab" data-toggle="tab" href="#Prof" role="tab" aria-controls="Prof" aria-selected="false" onclick="Prof()">Proficiency report</a>
                       </li>
-                      <li class="nav-item ml-auto">
+                      <li class="nav-item mr-1">
+                        <a class="nav-link" id="uav-tab" data-toggle="tab" href="#uav" role="tab" aria-controls="uav" aria-selected="false" onclick="uav()">UAV utilization</a>
+                      </li>
+                      <li class="nav-item ml-auto mt-0">
                       <div class="input-group">
-                          <input type="text" class="form-control" placeholder="Search for...">
+                     
                           <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">Go!</button>
-                            <button type="button" class="btn btn-sm btn-primary" id="add_button" onclick="addMia()">Add <i class="fa fa-plus"></i></button>
+                          
+                            <button type="button" class="btn btn-sm btn-primary" id="add_button" onclick="tol()">Add <i class="fa fa-plus"></i></button>
                           </span>
                         </div>
                       </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
-                      <div class="tab-pane fade " id="home" role="tabpanel" aria-labelledby="home-tab"><br>
+                      <div class="tab-pane fade show active" id="TOL" role="tabpanel" aria-labelledby="TOL-tab"><br>
                                    
                         <div class="table-responsive">
                           <form method="POST" action="../sample.php">
@@ -126,30 +130,24 @@ if(isset($user)){
                                   <div class="category-filter col-sm-12">
                                       <select id="categoryFilter" class="form-control">
                                         <option value="">All</option>
-                                        <option value="SRC1">SRC1</option>
-                                        <option value="SRC2">SRC2</option>
-                                        <option value="SRC3">SRC3</option>
-                                        <option value="SRC4">SRC4</option>
-                                        <option value="SRC5">SRC5</option>
+                                        <option value="SRC1">THOR</option>
+                                        <option value="SRC2">GRIFFIN</option>
+                                        <option value="SRC3">LEX 1</option>
+                                        <option value="SRC4">SK3</option>
                                       </select>
                                     </div>
                                  
                                   <th>
                                     <input type="checkbox" id="check-all" class="flat">
                                   </th>
-                                    <th class="column-title">Number </th>
-                                    <th class="column-title">Company</th>
-                                    <th class="column-title">Name/alias </th>
+                                    <th class="column-title">Address</th>
+                                    <th class="column-title">Type of UAV</th>
                                     <th class="column-title">Position </th>
                                     <th class="column-title">Unit </th>
-                                    <th class="column-title">Selector / cp number </th>
-                                    <th class="column-title">IMSI</th>
-                                    <th class="column-title">IMEI </th>
                                     <th class="column-title">Date/time </th>
-                                    <th class="column-title">LAC/CID </th>
-                                    <th class="column-title">Address </th>
                                     <th class="column-title">Remarks </th>
                                     <th class="column-title">Kml/kmz files </th>
+                                    <th class="column-title">Action</th>
                                     <th class="bulk-actions" colspan="16">
                                       <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
                                     </th>
@@ -157,34 +155,33 @@ if(isset($user)){
                                 </thead>
                                 <tbody>
 
+                                <!-- tol area php -->
                                 <?php
-                                $a = 0;
+                                 if($tol_area->tolArea() == false){
+                                  echo '';
+                                 }
+                                 else{
+                                  foreach($tol_area->tolArea() as $tol){
+                                    $a = 0;
+                                ?>
                                   
-                                  if($saved_locations->getKMS() == false){
-                                      echo 'no data';
-                                  }
-                                  else{
-                                      foreach($saved_locations->getKMS() as $row){
-                                          echo '<tr>';
-                                          echo '<td class="a-center "><input type="checkbox" class="flat" value="'.$row['dir'].'" name="check[]"></td>';
-                                          echo ' <td>'.$a++.'</td>';
-                                          echo ' <td>'.$row['company'].'</td>';
-                                          echo ' <td>'.$row['name'].'</td>';
-                                          echo ' <td>'.$row['position'].'</td>';
-                                          echo ' <td>'.$row['unit'].'</td>';
-                                          echo ' <td>'.$row['selector_name'].'</td>';
-                                          echo ' <td>'.$row['imsi'].'</td>';
-                                          echo ' <td>'.$row['imei'].'</td>';
-                                          echo ' <td>'.$row['date'].' '.$row['time'].'</td>';
-                                          echo ' <td>'.$row['lac_cid'].'</td>';
-                                          echo ' <td>'.$row['address'].'</td>';
-                                          echo ' <td>'.$row['remarks'].'</td>';
-                                          echo '  <td><a href="../sample.php?dir='.substr($row['dir'], 3).'" target="_blank"><i class="fa fa-globe"></i>open</a></td>';
-                                          echo '</tr>';
-                                      }
-                                      
-                                  }
-                                  ?>
+                                  <tr id="tol_<?= $tol['id'] ?>">
+                                      <td class="a-center "><input type="checkbox" class="flat" value="'.$row['dir'].'" name="check[]"></td>
+                                      <td><?= $tol['address'] ?></td>
+                                      <td><?= $tol['uav'] ?></td>
+                                      <td><?= $tol['position'] ?></td>
+                                      <td><?= $tol['unit'] ?></td>
+                                      <td><?= $tol['date'].'/'.$tol['time'] ?></td>
+                                      <td><?= $tol['remarks'] ?></td>
+                                      <td><?= $tol['file_name'] ?></td>
+                                      <td><button type="button" data-toggle="tooltip" data-placement="top" title="edit" onclick="editTolRecord(<?= $tol['id'];?>)" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button> <button type="button" onclick="deleteTolRecord(<?= $tol['id'];?>)" class="btn btn-sm btn-danger dlt_record" data-toggle="tooltip" data-placement="top" title="delete record"><i class="fa fa-trash"></button></td>
+                                <?php
+                                }
+                                 }
+                                
+                                
+                                ?>
+
 
 
                                   </tbody>
@@ -194,86 +191,83 @@ if(isset($user)){
                         </div>
                         
                       </div>
-                      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><br>
+                      <div class="tab-pane fade" id="ISR" role="tabpanel" aria-labelledby="profile-tab"><br>
                           <div class="table-responsive">
                             <table class="table table-striped jambo_table bulk_action" width="100%" id="tbl_rmd">
                               <thead>
                                 <tr class="headings">
-                                  <th class="column-title">NR </th>
-                                  <th class="column-title">Date</th>
-                                  <th class="column-title">Time </th>
-                                  <th class="column-title">Frequency </th>
-                                  <th class="column-title">Clarity </th>
-                                  <th class="column-title">Direction </th>
-                                  <th class="column-title">Subject/Convo </th>
-                                  <th class="column-title">Callsign </th>
-                                  <th class="column-title">Reciever </th>
-                                  <th class="column-title">FC </th>
-                                  <th class="column-title">SRC </th>
-                                  <th class="column-title">Barangay </th>
-                                  <th class="column-title">Municipality </th>
-                                  <th class="column-title">Province </th>
-                                  <th class="column-title">Grid Coordinate </th>
-                                  
-                                  </th>
-                                  <th class="bulk-actions" colspan="16">
-                                    <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-                                  </th>
+                                  <th class="column-title">Subject:</th>
+                                  <th class="column-title">To:</th>
+                                  <th class="column-title">Reference:</th>
+                                  <th class="column-title">Background:</th>
+                                  <th class="column-title">Flight Details:</th>
+                                  <th class="column-title">Result:</th>
+                                  <th class="column-title">Analysis:</th>
+                                  <th class="column-title">Assessment:</th>
+                                  <th class="column-title">Lesson learned:</th>
+                                  <th class="column-title">Best Practices:</th>
+                                  <th class="column-title">Issues and Concerns:</th>
+                                  <th class="column-title">Recommendation:</th>
+                                  <th class="column-title">Actopm:</th>
+                                 
                                 </tr>
                               </thead>
 
                               <tbody>
-                                <?php
-                                  $a = 0;
-                                    
-                                    if($saved_locations->getRMD() == false){
-                                        echo 'no data';
+                                  <?php
+                                    if($tol_area->isrData() == false){
+                                      echo '';
                                     }
                                     else{
-                                        foreach($saved_locations->getRMD() as $row){
-                                            echo '<tr>';
-                                            echo ' <td>'.$a++.'</td>';
-                                            echo ' <td>'.$row['date'].'</td>';
-                                            echo ' <td>'.$row['time'].'</td>';
-                                            echo ' <td>'.$row['frequency'].'</td>';
-                                            echo ' <td>'.$row['clarity'].'</td>';
-                                            echo ' <td>'.$row['direction'].'</td>';
-                                            echo ' <td>'.$row['subject'].'</td>';
-                                            echo ' <td>'.$row['callsign'].'</td>';
-                                            echo ' <td>'.$row['reciever'].' '.$row['time'].'</td>';
-                                            echo ' <td>'.$row['fc'].'</td>';
-                                            echo ' <td>'.$row['src'].'</td>';
-                                            echo ' <td>'.$row['barangay'].'</td>';
-                                            echo ' <td>'.$row['municipality'].'</td>';
-                                            echo ' <td>'.$row['province'].'</td>';
-                                            echo ' <td>'.$row['grid_coordinate'].'</td>';
-                                            echo '</tr>';
-                                        }
-                                        
+                                      foreach($tol_area->isrData() as $row){
+                                        $a = 0;
+                                    ?>
+                                      
+                                      <tr id="tol_<?= $tol['id'] ?>">
+                                          <td><?= $row['subject'] ?></td>
+                                          <td><?= $row['isr_to'] ?></td>
+                                          <td><?= $row['reference'] ?></td>
+                                          <td><?= $row['background'] ?></td>
+                                          <td><?= $row['flight_details'] ?></td>
+                                          <td><?= $row['result'] ?></td>
+                                          <td><?= $row['analysis'] ?></td>
+                                          <td><?= $row['assessment'] ?></td>
+                                          <td><?= $row['lesson_learned'] ?></td>
+                                          <td><?= $row['best_practices'] ?></td>
+                                          <td><?= $row['issues_concern'] ?></td>
+                                          <td><?= $row['recommendation'] ?></td>
+                            
+                                          <td><button type="button" data-toggle="tooltip" data-placement="top" title="edit" onclick="editIsr(<?= $row['id'];?>)" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button> <button type="button" onclick="delIsr(<?= $row['id'];?>)" class="btn btn-sm btn-danger dlt_record" data-toggle="tooltip" data-placement="top" title="delete record"><i class="fa fa-trash"></button></td>
+                                    <?php
                                     }
-                                  ?>
+                                    }
+                                    
+                                    
+                                    ?>
                               </tbody>
                             </table>
                         </div>
                       </div>
-                      <div class="tab-pane show active" id="mia" role="tabpanel" aria-labelledby="mia-tab"><br>
+                      <div class="tab-pane fade" id="uav-tab" role="tabpanel" aria-labelledby="profile-tab"><br>
                           <div class="table-responsive">
                             <table class="table table-striped jambo_table bulk_action" id="tbl_mia">
                               <thead>
                                 <tr class="headings">
-                                  <th class="column-title"># </th>
-                                  <th class="column-title">Target Name</th>
-                                  <th class="column-title">Phonenumber</th>
-                                  <th class="column-title">MSISDN</th>
-                                  <th class="column-title">IMEI</th>
-                                  <th class="column-title">IMSI</th>
-                                  <th class="column-title">TMSI</th>
-                                  <th class="column-title">Call</th>
+                                  <th class="column-title"></th>
+                                  <th class="column-title">TARGET NAME </th>
+                                  <th class="column-title">PHONE NUMBER </th>
+                                  <th class="column-title">MSISDN </th>
+                                  <th class="column-title">IMEI </th>
+                                  <th class="column-title">IMSI </th>
+                                  <th class="column-title">TMSI </th>
+                                  <th class="column-title">OPERATOR </th>
+                                  <th class="column-title">CALLS </th>
                                   <th class="column-title">SMS </th>
-                                  <th class="column-title">Identities </th>
-                                  <th class="column-title">Event </th>
-                                  <th class="column-title">Last Activity </th>
-                                  
+                                  <th class="column-title">IDENTITIES </th>
+                                  <th class="column-title">EVENT </th>
+                                  <th class="column-title">LAST ACTIVITY </th>
+                                 
+                  
                                   </th>
                                   <th class="bulk-actions" colspan="16">
                                     <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
@@ -282,32 +276,7 @@ if(isset($user)){
                               </thead>
 
                               <tbody>
-                                <?php
-                                  $a = 0;
-                                    
-                                    if($saved_locations->getMia() == false){
-                                        echo 'no data';
-                                    }
-                                    else{
-                                        foreach($saved_locations->getMia() as $row){
-                                            echo '<tr>';
-                                            echo ' <td>'.$a++.'</td>';
-                                            echo ' <td>'.$row['target_name'].'</td>';
-                                            echo ' <td>'.$row['phone_number'].'</td>';
-                                            echo ' <td>'.$row['msisdn'].'</td>';
-                                            echo ' <td>'.$row['imei'].'</td>';
-                                            echo ' <td>'.$row['imsi'].'</td>';
-                                            echo ' <td>'.$row['operator'].'</td>';
-                                            echo ' <td>'.$row['mia_call'].'</td>';
-                                            echo ' <td>'.$row['mia_sms'].'</td>';
-                                            echo ' <td>'.$row['identities'].'</td>';
-                                            echo ' <td>'.$row['event'].'</td>';
-                                            echo ' <td>'.$row['last_activity'].'</td>';
-                                            echo '</tr>';
-                                        }
-                                        
-                                    }
-                                  ?>
+                                 
                               </tbody>
                             </table>
                         </div>
@@ -321,138 +290,43 @@ if(isset($user)){
             </div>
           </div>
         </div>
+
         <!-- /page content -->
 
+        <!-- start tol_area modal -->
 
-        <!-- modal for adding rmd -->
-        <div class="modal fade add_rmd_modal" tabindex="-1" id="add_modal" role="dialog" aria-hidden="true">
+        <div class="modal fade tol_area" tabindex="-1" id="add_modal" role="dialog" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
-
               <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Add RMD</h4>
+                <h4 class="modal-title" id="myModalLabel">Add TOL Area</h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                 </button>
               </div>
               <div class="modal-body">
-                  <div class="row">
+                  <div class="tol">
                     <div class="col-md-12">
                       <div class="x_panel">
-                      <form method="POST" action="../includes/upload_kml.inc.php" enctype="multipart/form-data">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="date">Date</label>
-                                <input type="date" class="form-control" name="date">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="time">Time</label>
-                                <input type="time" class="form-control" name="time">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="frequency">Frequency</label>
-                            <input type="text" class="form-control" name="frequency">
-                        </div>
-                        <div class="form-group">
-                            <label for="clarity">Clarity</label>
-                            <input type="text" class="form-control" name="clarity">
-                        </div>
-                        <div class="form-group">
-                            <label for="direction">Direction</label>
-                            <input type="text" class="form-control" name="direction">
-                        </div>
-                        <p id="conpasscheck" style="color: red;"></p>
-                        <div class="form-group">
-                            <label for="subject">Subject/Convo</label>
-                            <input type="text" class="form-control" name="subject">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputAddress2">Callsign</label>
-                            <input type="text" class="form-control" name="callsign">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputAddress2">Reciever</label>
-                            <input type="text" class="form-control" name="reciever">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputAddress2">Fc</label>
-                            <input type="text" class="form-control" name="fc">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputAddress2">SRC</label>
-                            <input type="text" class="form-control" name="src">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputAddress2">Region</label>
-                            <select id="region" class="form-control"></select>
-                            <input type="hidden" name="region_text" id="region-text">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputAddress2">Province</label>
-                            <select id="province" class="form-control"></select>
-                            <input type="hidden" name="province_text" id="province-text">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputAddress2">City</label>
-                            <select id="city" class="form-control"></select>
-                            <input type="hidden" name="city_text" id="city-text">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputAddress2">Barangay</label>
-                            <select id="barangay" class="form-control"></select>
-                            <input type="hidden" name="barangay_text" id="barangay-text">
-                        </div>
-                        <div class="form-group">
-                            <label for="grid">Grid Coordinates</label>
-                            <input type="text" class="form-control" name="grid">
-                        </div>
-                        
-                    
-                      </div>               
-                    </div>
-                 </div>
-              </div>
-              <div class="modal-footer">
-                <button type="submit" name="submit_rmd_button" class="btn btn-primary">Save</button>
-              </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      
-        <!-- end rmd modal -->
-
-        <!-- start selector modal -->
-
-        <div class="modal fade add_selector_modal" tabindex="-1" id="add_modal" role="dialog" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Add Selector</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="x_panel">
-                      <form method="POST" action="../includes/upload_kml.inc.php" enctype="multipart/form-data">
+                      <form method="POST" action="../includes/geoint.inc.php" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="Name">Date</label>
                                 <input type="date" class="form-control" name="date">
                             </div>
                             <div class="form-group">
-                                <label for="company">Company</label>
-                                <select name="company" class="form-control">
-                                  <option value="SRC1">SRC1</option>
-                                  <option value="SRC2">SRC2</option>
-                                  <option value="SRC3">SRC3</option>
-                                  <option value="SRC4">SRC4</option>
-                                  <option value="SRC5">SRC5</option>
+                                <label for="time">Time</label>
+                                <input type="time" class="form-control" name="time">
+                            </div>
+                            <div class="form-group">
+                                <label for="uav">UAV</label>
+                                <select name="uav" class="form-control">
+                                  <option value="THOR">THOR</option>
+                                  <option value="GRIFFIN">GRIFFIN</option>
+                                  <option value="LEX 1">LEX 1</option>
+                                  <option value="SK3">SK3</option>
                                 </select>
                             </div>
                         <div class="form-group">
-                            <label for="name">Name/Alias</label>
+                            <label for="name">Name/Alias KMZ</label>
                             <input type="text" class="form-control" name="name">
                         </div>
                         <div class="form-group">
@@ -462,27 +336,6 @@ if(isset($user)){
                         <div class="form-group">
                             <label for="unit">Unit</label>
                             <input type="text" class="form-control" name="unit">
-                        </div>
-                        <p id="conpasscheck" style="color: red;"></p>
-                        <div class="form-group">
-                            <label for="selector_name">Selector/Cp Number</label>
-                            <input type="text" class="form-control" name="selector_name">
-                        </div>
-                        <div class="form-group">
-                            <label for="imsi">IMSI</label>
-                            <input type="text" class="form-control" name="imsi">
-                        </div>
-                        <div class="form-group">
-                            <label for="imei">Imei</label>
-                            <input type="text" class="form-control" name="imei">
-                        </div>
-                        <div class="form-group">
-                            <label for="time">Time</label>
-                            <input type="time" class="form-control" name="time">
-                        </div>
-                        <div class="form-group">
-                            <label for="lac_cid">LAC/CID</label>
-                            <input type="text" class="form-control" name="lac_cid">
                         </div>
                         <div class="form-group">
                             <label for="inputAddress2">Region</label>
@@ -510,7 +363,7 @@ if(isset($user)){
                         </div>
                         <div class="form-group">
                             <label for="remarks">Upload KML/KMZ</label>
-                            <input type="file" class="form-control" name="upload_kml">
+                            <input type="file" class="form-control" name="geoint">
                         </div>
                         
                     
@@ -519,97 +372,275 @@ if(isset($user)){
                  </div>
               </div>
               <div class="modal-footer">
-                <button type="submit" name="submit_button" class="btn btn-primary">Save</button>
+                <button type="submit" name="submit_tol_area" class="btn btn-primary">Save</button>
               </div>
               </form>
             </div>
           </div>
         </div>
 
-        <!-- end selector modal -->
+        <!-- end tol_area modal -->
 
-         <!-- start mia modal -->
+        <!-- edit tol_area modal -->
 
-         <div class="modal fade add_mia" tabindex="-1" id="add_mia" role="dialog" aria-hidden="true">
+        <div class="modal fade edit_tol_area" tabindex="-1" id="add_modal" role="dialog" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Add MIA</h4>
+                <h4 class="modal-title" id="myModalLabel">Edit TOL Area Record</h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                 </button>
               </div>
               <div class="modal-body">
-                  <div class="row">
+                  <div class="tol">
                     <div class="col-md-12">
                       <div class="x_panel">
-                      <form method="POST" action="../includes/upload_kml.inc.php" enctype="multipart/form-data">
+                      <form method="POST" action="../includes/geoint.inc.php" enctype="multipart/form-data">
+                            <input type="hidden" name="tol_id" id="tol_id">
                             <div class="form-group">
-                                <label for="target_name">Target Name</label>
-                                <input type="text" class="form-control" name="target_name">
+                                <label for="edit_date">Date</label>
+                                <input type="date" class="form-control" name="edit_date" id="edit_date" >
                             </div>
                             <div class="form-group">
-                                <label for="phone_number">Phone Number</label>
-                                <input type="text" class="form-control" name="phone_number">
+                                <label for="edit_time">Time</label>
+                                <input type="time" class="form-control" name="edit_time" id="edit_time">
+                            </div>
+                            <div class="form-group">
+                                <label for="uav">UAV</label>
+                                <select name="uav" class="form-control" id="edit_uav">
+                                  <option value="THOR">THOR</option>
+                                  <option value="GRIFFIN">GRIFFIN</option>
+                                  <option value="LEX 1">LEX 1</option>
+                                  <option value="SK3">SK3</option>
+                                </select>
                             </div>
                         <div class="form-group">
-                            <label for="msisdn">MSISDN</label>
-                            <input type="text" class="form-control" name="msisdn">
+                            <label for="edit_name">Name/Alias KMZ</label>
+                            <input type="text" class="form-control" name="edit_name" id="edit_name">
                         </div>
                         <div class="form-group">
-                            <label for="imei">IMEI</label>
-                            <input type="text" class="form-control" name="imei">
+                            <label for="edit_position">Position</label>
+                            <input type="text" class="form-control" name="edit_position" id="edit_position">
                         </div>
                         <div class="form-group">
-                            <label for="imsi">IMSI</label>
-                            <input type="text" class="form-control" name="imsi">
+                            <label for="edit_unit">Unit</label>
+                            <input type="text" class="form-control" name="edit_unit" id="edit_unit">
                         </div>
                         <div class="form-group">
-                            <label for="tmsi">TMSI</label>
-                            <input type="text" class="form-control" name="tmsi">
+                            <label for="inputAddress2">Region</label>
+                            <select id="tol_region" class="form-control"></select>
+                            <input type="hidden" name="region_text" id="tol-region-text">
                         </div>
                         <div class="form-group">
-                            <label for="operator">Operator</label>
-                            <input type="text" class="form-control" name="operator">
+                            <label for="inputAddress2">Province</label>
+                            <select id="tol_province" class="form-control"></select>
+                            <input type="hidden" name="province_text" id="tol-province-text">
                         </div>
                         <div class="form-group">
-                            <label for="call">Call</label>
-                            <input type="text" class="form-control" name="call">
+                            <label for="inputAddress2">City</label>
+                            <select id="tol_city" class="form-control"></select>
+                            <input type="hidden" name="city_text" id="tol-city-text">
                         </div>
                         <div class="form-group">
-                            <label for="sms">SMS</label>
-                            <input type="text" class="form-control" name="sms">
+                            <label for="inputAddress2">Barangay</label>
+                            <select id="tol_barangay" class="form-control"></select>
+                            <input type="hidden" name="barangay_text" id="tol-barangay-text">
                         </div>
                         <div class="form-group">
-                            <label for="identities">Identities</label>
-                            <input type="text" class="form-control" name="identities">
+                            <label for="edit_remarks">Remarks</label>
+                            <input type="text" class="form-control" name="edit_remarks" id="edit_remarks">
                         </div>
                         <div class="form-group">
-                            <label for="event">Event</label>
-                            <input type="text" class="form-control" name="event">
+                            <label for="remarks">Upload KML/KMZ</label>
+                            <input type="file" class="form-control" name="geoint">
                         </div>
-                        <div class="form-group">
-                            <label for="last_activity">Last Activity</label>
-                            <input type="text" class="form-control" name="last_activity">
-                        </div>
+                        
                     
                       </div>               
                     </div>
                  </div>
               </div>
               <div class="modal-footer">
-                <button type="submit" name="mia_submit_button" class="btn btn-primary">Save</button>
+                <button type="submit" name="submit_edit_tol_area" class="btn btn-primary">Save</button>
               </div>
               </form>
             </div>
           </div>
         </div>
 
-        <!-- end mia modal -->
+        <!-- edit tol_area modal -->
+
+
+        <!-- modal for adding isr -->
+        <div class="modal fade add_isr" tabindex="-1" id="add_modal" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add ISR Report</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <div class="tol">
+                    <div class="col-md-12">
+                      <div class="x_panel">
+                      <form method="POST" action="../includes/geoint.inc.php" enctype="multipart/form-data">
+                        <div class="form-tol">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" class="form-control" name="subject">
+                        </div>
+                        <div class="form-group">
+                            <label for="isr_to">To</label>
+                            <input type="text" class="form-control" name="isr_to">
+                        </div>
+                        <div class="form-group">
+                            <label for="reference">Reference</label>
+                            <input type="text" class="form-control" name="reference">
+                        </div>
+                        <div class="form-group">
+                            <label for="background">Background</label>
+                            <input type="text" class="form-control" name="background">
+                        </div>
+                        <div class="form-group">
+                            <label for="flight_details">Flight Details</label>
+                            <input type="text" class="form-control" name="flight_details" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="result">Result</label>
+                            <input type="text" class="form-control" name="result" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="analysis">Analysis</label>
+                            <input type="text" class="form-control" name="analysis" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="assessment">Assessment</label>
+                            <input type="text" class="form-control" name="assessment" required> 
+                        </div>
+                        <div class="form-group">
+                            <label for="lesson_learned">Lesson Learned</label>
+                            <input type="text" class="form-control" name="lesson_learned" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="best_practices">Best Practices</label>
+                            <input type="text" class="form-control" name="best_practices" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="issues_concern">Issues and Concern</label>
+                            <input type="text" class="form-control" name="issues_concern" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="recommendation">Recommendation</label>
+                            <input type="text" class="form-control" name="recommendation">
+                        </div>
+                        
+                    
+                      </div>               
+                    </div>
+                 </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" name="submit_isr_button" class="btn btn-primary">Save</button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      
+        <!-- end isr modal -->
+
+          <!-- modal for edit isr -->
+          <div class="modal fade edit_isr" tabindex="-1" id="add_modal" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Edit ISR Report</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <div class="tol">
+                    <div class="col-md-12">
+                      <div class="x_panel">
+                      <form method="POST" action="../includes/geoint.inc.php" enctype="multipart/form-data">
+                      <input type="hidden" class="form-control" name="isr_id" id="isr_id">
+                        <div class="form-tol">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" class="form-control" name="subject" id="isr-subject">
+                        </div>
+                        <div class="form-group">
+                            <label for="isr_to">To</label>
+                            <input type="text" class="form-control" name="isr_to" id="isr-isr_to">
+                        </div>
+                        <div class="form-group">
+                            <label for="reference">Reference</label>
+                            <input type="text" class="form-control" name="reference" id="isr-reference">
+                        </div>
+                        <div class="form-group">
+                            <label for="background">Background</label>
+                            <input type="text" class="form-control" name="background" id="isr-background">
+                        </div>
+                        <div class="form-group">
+                            <label for="flight_details">Flight Details</label>
+                            <input type="text" class="form-control" name="flight_details" id="isr-flight_details">
+                        </div>
+                        <div class="form-group">
+                            <label for="result">Result</label>
+                            <input type="text" class="form-control" name="result" id="isr-result">
+                        </div>
+                        <div class="form-group">
+                            <label for="analysis">Analysis</label>
+                            <input type="text" class="form-control" name="analysis" id="isr-analysis">
+                        </div>
+                        <div class="form-group">
+                            <label for="assessment">Assessment</label>
+                            <input type="text" class="form-control" name="assessment" id="isr-assessment"> 
+                        </div>
+                        <div class="form-group">
+                            <label for="lesson_learned">Lesson Learned</label>
+                            <input type="text" class="form-control" name="lesson_learned" id="isr-lesson_learned">
+                        </div>
+                        <div class="form-group">
+                            <label for="best_practices">Best Practices</label>
+                            <input type="text" class="form-control" name="best_practices" id="isr-best_practices">
+                        </div>
+                        <div class="form-group">
+                            <label for="issues_concern">Issues and Concern</label>
+                            <input type="text" class="form-control" name="issues_concern" id="isr-issues_concern">
+                        </div>
+                        <div class="form-group">
+                            <label for="recommendation">Recommendation</label>
+                            <input type="text" class="form-control" name="recommendation" id="isr-recommendation">
+                        </div>
+                        
+                    
+                      </div>               
+                    </div>
+                 </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" name="submit_edit_isr_button" class="btn btn-primary">Save</button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      
+        <!-- end edit isr modal -->
+ 
+
+        
 
         <!-- footer content -->
         <footer>
           <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+          94th MICO(TECH)
           </div>
           <div class="clearfix"></div>
         </footer>
@@ -640,7 +671,6 @@ if(isset($user)){
        $("document").ready(function () {
 
         $('#tbl_rmd').DataTable();
-        $('#tbl_mia').DataTable();
         $('#example').dataTable({
           "searching": true
         });
@@ -678,24 +708,102 @@ if(isset($user)){
        })
       
 
-      function selector(){
-        document.getElementById('add_button').setAttribute('onclick','addSelector()')
+      function tol(){
+        document.getElementById('add_button').setAttribute('onclick','addTol()')
       }
-      function rmd(){
-       document.getElementById('add_button').setAttribute('onclick','addRmd()')
+      function isr(){
+       document.getElementById('add_button').setAttribute('onclick','addISR()')
       }
-      function mia(){
-        document.getElementById('add_button').setAttribute('onclick','addMia()')
+      function addTol(){
+        $(".tol_area").modal("show");
       }
-      function addSelector(){
-        $(".add_selector_modal").modal("show");
-      }
-      function addRmd(){
+      function addISR(){
     
-        $(".add_rmd_modal").modal("show");
+        $(".add_isr").modal("show");
       }
-      function addMia(){
-        $(".add_mia").modal("show");
+
+      function editIsr(id){
+        $.ajax({
+            method: "get",
+            dataType: "json",
+            url: "../includes/geoint.inc.php?isr_id=" + id,
+            success: function (response){
+      
+              $('#isr_id').val(id)
+              $('#isr-subject').val(response.subject)
+              $('#isr-isr_to').val(response.isr_to)
+              $('#isr-reference').val(response.reference)
+              $('#isr-background').val(response.background)
+              $('#isr-flight_details').val(response.flight_details)
+              $('#isr-result').val(response.result)
+              $('#isr-analysis').val(response.analysis)
+              $('#isr-assessment').val(response.assessment)
+              $('#isr-lesson_learned').val(response.lesson_learned)
+              $('#isr-best_practices').val(response.best_practices)
+              $('#isr-issues_concern').val(response.issues_concern)
+              $('#isr-recommendation').val(response.recommendation)
+                   
+
+
+
+                    
+             
+            }
+        })
+        // $('#prof_uid').val(prof_id);
+        $('.edit_isr').modal(); 
+      }
+      function delIsr(id){
+
+        var confirmation = confirm("are you sure you want to remove the item?");
+
+        if(confirmation){
+            $.ajax({
+                method: "get",
+                url: "../includes/geoint.inc.php?delete_isr=" + id,
+                success: function (response){
+                $("#selector_"+id).remove();
+                }
+            })
+        }
+      }
+
+      function deleteTolRecord(id){
+        var confirmation = confirm("are you sure you want to remove this record?");
+
+        if(confirmation){
+            $.ajax({
+                method: "get",
+                url: "../includes/geoint.inc.php?tol_record=" + id,
+                success: function (response){
+                $("#tol_"+id).remove();
+                }
+            })
+        }
+      }
+
+      function editTolRecord(id){
+
+          $.ajax({
+              method: "get",
+              dataType: "json",
+              url: "../includes/geoint.inc.php?userid=" + id,
+              success: function (response){
+              $.each(response, function(index, data) {
+                       $("#tol_id").val(id); 
+                       $("#edit_uav").val(data.uav); 
+                      $('#edit_date').val(data.date)
+                      $('#edit_time').val(data.time)
+                      $('#edit_name').val(data.file_name)
+                      $('#edit_position').val(data.position)
+                      $('#edit_unit').val(data.unit)
+                      $('#edit_remarks').val(data.remarks)
+                      
+                  });
+              }
+          })
+          // $('#prof_uid').val(prof_id);
+          $('.edit_tol_area').modal(); 
       }
     </script>
   </body>

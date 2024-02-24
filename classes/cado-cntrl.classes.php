@@ -14,11 +14,11 @@ public function setWacom($full_name, $alias, $bday, $address, $position, $affil,
 
 }
 
-public function editOsint($date, $acc, $pers, $issues, $others, $id){
-    return $this->updateOsint($date, $acc, $pers, $issues, $others,$id);
+public function editOsint($date, $acc, $pers, $issues, $others,$role, $id){
+    return $this->updateOsint($date, $acc, $pers, $issues, $others,$role,$id);
 }
 
-public function editWacom($full_name, $alias, $bday, $address, $position, $affil, $others,$picture, $id){
+public function editWacom($full_name, $alias, $bday, $address, $position, $affil, $others,$picture, $role, $id){
     $imageFile = '';
     if($picture != ''){
         $imageFile = null;
@@ -28,7 +28,7 @@ public function editWacom($full_name, $alias, $bday, $address, $position, $affil
     }
 
 
-    return $this->updateWacom($full_name, $alias, $bday, $address, $position, $affil, $others,$imageFile,$id);
+    return $this->updateWacom($full_name, $alias, $bday, $address, $position, $affil, $others,$imageFile,$role,$id);
 
 }
 
@@ -47,6 +47,16 @@ public function getCurrentOsint($id){
 public function getCurrentWacom($id){
     echo json_encode($this->getWacomId($id));
 }
+
+public function delCurrentOsint($id){
+    $this->deleteOsint($id);
+    return json_encode(array("statusCode"=>200));
+}
+public function delCurrentWacom($id){
+    $this->deleteWacom($id);
+    return json_encode(array("statusCode"=>200));
+}
+
 
 
 public function uploadImage($imageName){

@@ -32,6 +32,8 @@ if(isset($_POST['submit_wacom'])){
 }
 
 if(isset($_POST['edit_submit_osint'])){
+    
+    $role = $_POST['user_role'];
     $id = $_POST['osint_id'];
     $date = $_POST['date'];
     $acc = $_POST['acc'];
@@ -39,11 +41,12 @@ if(isset($_POST['edit_submit_osint'])){
     $issues = $_POST['issues'];
     $others = $_POST['others_data'];
 
-    $cado->editOsint($date, $acc, $pers, $issues, $others, $id);
+    $cado->editOsint($date, $acc, $pers, $issues, $others,$role, $id);
 }
 
 if(isset($_POST['edit_submit_wacom'])){
     $id = $_POST['wacom_id'];
+    $role = $_POST['user_role'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
     $alias = $_POST['alias'];
@@ -56,7 +59,7 @@ if(isset($_POST['edit_submit_wacom'])){
 
     $full_name = $first_name.' '.$last_name;
 
-    $cado->editWacom($full_name, $alias, $bday, $address, $position, $affil, $others,$picture, $id);
+    $cado->editWacom($full_name, $alias, $bday, $address, $position, $affil, $others,$picture,$role, $id);
 }
 
 if(isset($_GET['osint_id'])){
@@ -66,6 +69,15 @@ if(isset($_GET['osint_id'])){
 if(isset($_GET['wacom_id'])){
     $cado->getCurrentWacom($_GET['wacom_id']);
 }
+
+if(isset($_GET['delete_osint'])){
+
+    $cado->delCurrentOsint($_GET['delete_osint']);
+}
+if(isset($_GET['delete_wacom'])){
+   $cado->delCurrentWacom($_GET['delete_wacom']);
+}
+
 
 
 ?>

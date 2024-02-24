@@ -74,7 +74,7 @@ class cadoClass extends db{
         }
     }
 
-    protected function updateOsint($date, $acc, $pers, $issues, $others, $id){
+    protected function updateOsint($date, $acc, $pers, $issues, $others,$role, $id){
         $connection = $this->dbOpen();
         $stmt = $connection->prepare("UPDATE osint SET date = ?, acc = ?, personalities = ?, issues = ?,others = ? WHERE id = ?");
         if(!$stmt->execute([$date, $acc, $pers, $issues, $others, $id])){
@@ -82,10 +82,16 @@ class cadoClass extends db{
             header("location: ../cado/index.php?errors=stmtfailed");
             exit();
         }
-        header("location: ../cado/index.php?success=1");
+        if($role == 'administrator'){
+            header("location: ../administrator/cado.php?success=osint");
+        }
+        else{
+            header("location: ../cado/index.php?success=osint");
+        }
+        
     }
 
-    protected function updateWacom($full_name, $alias, $bday, $address, $position, $affil, $others,$imageFile, $id){
+    protected function updateWacom($full_name, $alias, $bday, $address, $position, $affil, $others,$imageFile,$role, $id){
         $connection = $this->dbOpen();
         if($imageFile == ''){
             $stmt = $connection->prepare("UPDATE wacom SET full_name = ?, alias = ?, bday = ?, address = ?, position = ?, affil = ?, others = ?  WHERE id = ?");
@@ -94,7 +100,13 @@ class cadoClass extends db{
                 header("location: ../cado/index.php?errors=stmtfailed");
                 exit();
             }
-            header("location: ../cado/index.php?success=1");
+            if($role == 'administrator'){
+                header("location: ../administrator/cado.php?success=wacom");
+            }
+            else{
+                header("location: ../cado/index.php?success=wacom");
+            }
+    
         }
         else{
             $stmt = $connection->prepare("UPDATE wacom SET full_name = ?, alias = ?, bday = ?, address = ?, position = ?, affil = ?, dir = ?, others = ?  WHERE id = ?");
@@ -103,9 +115,26 @@ class cadoClass extends db{
                 header("location: index.php?errors=stmtfailed");
                 exit();
             }
-            header("location: ../cado/index.php?success=1");
+            if($role == 'administrator'){
+                header("location: ../administrator/cado.php?success=osint");
+            }
+            else{
+                header("location: ../cado/index.php?success=osint");
+            }
         }
    
+    }
+
+    protected function deleteOsint($id){
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare("DELETE FROM osint WHERE id = ?");
+        $stmt->execute([$id]);
+    }
+
+    protected function deleteWacom($id){
+        $connection = $this->dbOpen();
+        $stmt = $connection->prepare("DELETE FROM wacom WHERE id = ?");
+        $stmt->execute([$id]);
     }
 
     

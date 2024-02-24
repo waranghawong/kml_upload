@@ -16,7 +16,6 @@ if(isset($user)){
   $role = $user['role'];
   if($role == '0'){ 
 
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,10 +96,10 @@ if(isset($user)){
 
                     <ul class="nav nav-tabs bar_tabs" style="border-style: none;" id="myTab" role="tablist">
                       <li class="nav-item mr-1">
-                        <a class="nav-link active" id="Osint-tab" data-toggle="tab" href="#OSINT" role="tab" aria-controls="OSINT" aria-selected="true" onclick="Osint()">OSINT</a>
+                        <a class="nav-link <?php  if(isset($_GET['success']) && $_GET['success'] == 'osint'){ echo 'active'; }else{ echo ''; } ?>" id="Osint-tab" data-toggle="tab" href="#OSINT" role="tab" aria-controls="OSINT" aria-selected="true" onclick="Osint()">OSINT</a>
                       </li>
                       <li class="nav-item mr-1">
-                        <a class="nav-link" id="Wacom-tab" data-toggle="tab" href="#WACOM" role="tab" aria-controls="WACOM" aria-selected="false" onclick="Wacom()">WACOM</a>
+                        <a class="nav-link <?php  if(isset($_GET['success']) && $_GET['success'] == 'wacom'){ echo 'active'; }else{ echo ''; } ?>" id="Wacom-tab" data-toggle="tab" href="#WACOM" role="tab" aria-controls="WACOM" aria-selected="false" onclick="Wacom()">WACOM</a>
                       </li>
                       <li class="nav-item ml-auto mt-0">
                       <div class="input-group">
@@ -111,7 +110,7 @@ if(isset($user)){
                       </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
-                      <div class="tab-pane fade show active" id="OSINT" role="tabpanel" aria-labelledby="TOL-tab"><br>
+                      <div class="tab-pane <?php  if(isset($_GET['success']) && $_GET['success'] == 'osint'){ echo 'active'; }else{ echo ''; } ?>" id="OSINT" role="tabpanel" aria-labelledby="TOL-tab"><br>
                                    
                         <div class="table-responsive">
                               <table class="table table-striped jambo_table bulk_action" id="osint">
@@ -155,7 +154,7 @@ if(isset($user)){
                         </div>
                         
                       </div>
-                      <div class="tab-pane fade" id="WACOM" role="tabpanel" aria-labelledby="profile-tab"><br>
+                      <div class="tab-pane <?php  if(isset($_GET['success']) && $_GET['success'] == 'wacom'){ echo 'active'; }else{ echo ''; } ?>" id="WACOM" role="tabpanel" aria-labelledby="profile-tab"><br>
                           <div class="table-responsive">
                             <table class="table table-striped jambo_table bulk_action" width="100%" id="wacom">
                               <thead>
@@ -285,6 +284,7 @@ if(isset($user)){
                       <div class="x_panel">
                       <form method="POST" action="../includes/cado.inc.php" enctype="multipart/form-data">
                       <input type="hidden" class="form-control" name="osint_id" id="osint_id">
+                      <input type="hidden" class="form-control" name="user_role" value="admin" id="osint_id">
                         <div class="form-group">
                             <label for="date">Date</label>
                             <input type="date" class="form-control" name="date" id="osint-date">
@@ -407,7 +407,8 @@ if(isset($user)){
                     <div class="col-md-12">
                       <div class="x_panel">
                       <form method="POST" action="../includes/cado.inc.php" enctype="multipart/form-data">
-                      <input type="hiddent" class="form-control" name="wacom_id" id="wacom_id">
+                      <input type="hidden" class="form-control" name="wacom_id" id="wacom_id">
+                      <input type="hidden" class="form-control" name="user_role" value="administrator" id="osint_id">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="first_name">First Name</label>
@@ -573,9 +574,9 @@ if(isset($user)){
       if(confirmation){
           $.ajax({
               method: "get",
-              url: "../includes/cado.inc.php?delete_liberty=" + id,
+              url: "../includes/cado.inc.php?delete_osint=" + id,
               success: function (response){
-              $("#liberty_"+id).remove();
+              $("#osint_"+id).remove();
             }
           })
       } 
@@ -586,9 +587,9 @@ if(isset($user)){
       if(confirmation){
           $.ajax({
               method: "get",
-              url: "../includes/cado.inc.php?delete_liberty=" + id,
+              url: "../includes/cado.inc.php?delete_wacom=" + id,
               success: function (response){
-              $("#liberty_"+id).remove();
+              $("#wacom"+id).remove();
             }
           })
       } 
