@@ -27,12 +27,11 @@
       foreach($_POST['check'] as $checkbox){
         if($checkbox){
 
-           $a = substr($checkbox, 13);
+           $a = substr($checkbox,3);
          // shell_exec('c:\WINDOWS\system32\cmd.exe @cmd /k \\\192.168.100.221\xampp\htdocs\kml_upload\kml_files\\'.$a.'');
 
-          $file = basename($_GET['file']);
-          $file = '\\\\192.168.100.221\xampp\htdocs\kml_upload\kml_files\\'.$a;
-          
+         // $file = '\\\192.168.10.217\xampp\htdocs\kml\kml_files\\'.$a;
+      
           if(!file_exists($a)){ // file does not exist
               die('file not found');
           } else {
@@ -70,25 +69,5 @@
 
 
 
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-<button onclick="openCMD()">Open CMD</button>
-<script>
-function openCMD() {
-  console.log('hello world');
-  window.open("https://www.w3schools.com");
-  //window.open("\\192.168.10.217\xampp\htdocs\kml\kml_files\3q7rrfq92w428129319_405696565448066_1840518164740996938_n.jpg");
-
-}
-</script>
-</body>
-</html>
+?>\
 
