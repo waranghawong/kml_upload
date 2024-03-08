@@ -6,16 +6,18 @@ include '../classes/cado-cntrl.classes.php';
 $cado = new cadoCntrller();
 
 if(isset($_POST['submit_osint'])){
+    $role = $_POST['role'];
     $date = $_POST['date'];
     $acc = $_POST['acc'];
     $pers = $_POST['personalities'];
     $issues = $_POST['issues'];
     $others = $_POST['others_data'];
 
-    $cado->setOsint($date, $acc, $pers, $issues, $others);
+    $cado->setOsint($date, $acc, $pers, $issues, $others, $role);
 }
 
 if(isset($_POST['submit_wacom'])){
+    $role = $_POST['role'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
     $alias = $_POST['alias'];
@@ -27,8 +29,9 @@ if(isset($_POST['submit_wacom'])){
     $picture = $_FILES['picture'];
 
     $full_name = $first_name.' '.$last_name;
+    var_dump($role);
 
-    $cado->setWacom($full_name, $alias, $bday, $address, $position, $affil, $others,$picture);
+     $cado->setWacom($full_name, $alias, $bday, $address, $position, $affil, $others,$picture, $role);
 }
 
 if(isset($_POST['edit_submit_osint'])){

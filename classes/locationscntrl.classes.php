@@ -132,7 +132,7 @@ class locationsCntrl extends locations{
             echo $kmlOutput;
     }
 
-    public function uploadKMS($file,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks){
+    public function uploadKMS($file,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks, $role){
 
         $target_dir = "../kml_files/";
         if ($file['name'] == trim($file['name']) && str_contains($file['name'], ' ')) {
@@ -157,7 +157,7 @@ class locationsCntrl extends locations{
             
             if (move_uploaded_file($file["tmp_name"], $target_file)) {
                 // echo "The file ". htmlspecialchars( basename( $file["name"])). " has been uploaded.";
-                return $this->insertKMSFILE($target_file,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks);
+                return $this->insertKMSFILE($target_file,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks, $role);
               } else {
                 header("location: ../index.php?error=there_was_a_problem_uploading_your_file");
               }
@@ -166,17 +166,17 @@ class locationsCntrl extends locations{
        
     }
 
-    public function insertRMD($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid){
-        return $this->setRMD($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid);
+    public function insertRMD($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid, $role){
+        return $this->setRMD($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid, $role);
     }
 
-    public function insertMIA($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity){
+    public function insertMIA($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity, $role){
 
-       return $this->setMia($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity);
+       return $this->setMia($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity, $role);
     }
 
-    public function insertLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number){
-        return $this->setLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number);
+    public function insertLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number, $role){
+        return $this->setLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number, $role);
     }
 
     function random_string($length = 10) {
@@ -221,9 +221,9 @@ class locationsCntrl extends locations{
         echo json_encode($this->getSelectedLibertyId($id));
     }
 
-    public function editSelector($file,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks, $id){
+    public function editSelector($file,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks, $id, $role){
         if($file['name'] == ''){
-            return $this->updateSelector($file['name'],$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks, $id);
+            return $this->updateSelector($file['name'],$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks, $id, $role);
         }
         else{
             $target_dir = "../kml_files/";
@@ -249,7 +249,7 @@ class locationsCntrl extends locations{
                 
                 if (move_uploaded_file($file["tmp_name"], $target_file)) {
                     // echo "The file ". htmlspecialchars( basename( $file["name"])). " has been uploaded.";
-                    return $this->updateSelector($target_file,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks,$id);
+                    return $this->updateSelector($target_file,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks,$id, $role);
                   } else {
                     header("location: ../administrator/sigint.php?error=there_was_a_problem_uploading_your_file");
                   }
@@ -258,16 +258,16 @@ class locationsCntrl extends locations{
        
     }
 
-    public function editRmd($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid, $id){
-        return $this->updateRmd($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid, $id);
+    public function editRmd($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid, $id, $role, $address){
+        return $this->updateRmd($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid, $id, $role, $address);
     }
 
-    public function editMia($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity, $id){
-        return $this->updateMia($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity, $id);
+    public function editMia($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity, $id, $role){
+        return $this->updateMia($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity, $id, $role);
     }
 
-    public function editLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number, $id){
-        return $this->updateLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number, $id);
+    public function editLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number, $id, $role){
+        return $this->updateLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number, $id, $role);
     }
 
     public function deleteCurrentSelector($id){

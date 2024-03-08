@@ -58,7 +58,7 @@ if(isset($user)){
             <br />
 
             <!-- sidebar menu -->
-      
+            <?php include "../includes/sidebar.inc.php"; ?>
             <!-- /sidebar menu -->
 
           </div>
@@ -98,10 +98,10 @@ if(isset($user)){
 
                     <ul class="nav nav-tabs bar_tabs" style="border-style: none;" id="myTab" role="tablist">
                       <li class="nav-item mr-1">
-                        <a class="nav-link active" id="TOL-tab" data-toggle="tab" href="#TOL" role="tab" aria-controls="TOL" aria-selected="true" onclick="tol()">TOL area</a>
+                        <a class="nav-link <?php if(isset($_GET['success'])){ if($_GET['success'] == 'tol_area') { echo 'active'; }else{ ''; } }else{ echo 'active'; } ?>" id="TOL-tab" data-toggle="tab" href="#TOL" role="tab" aria-controls="TOL" aria-selected="true" onclick="tol()">TOL area</a>
                       </li>
                       <li class="nav-item mr-1">
-                        <a class="nav-link" id="ISR-tab" data-toggle="tab" href="#ISR" role="tab" aria-controls="ISR" aria-selected="false" onclick="isr()">ISR report</a>
+                        <a class="nav-link <?php if(isset($_GET['success'])){ if($_GET['success'] == 'isr') { echo 'active'; }else{ ''; } }else{ echo ''; } ?>" id="ISR-tab" data-toggle="tab" href="#ISR" role="tab" aria-controls="ISR" aria-selected="false" onclick="isr()">ISR report</a>
                       </li>
                       <li class="nav-item mr-1">
                         <a class="nav-link" id="Prof-tab" data-toggle="tab" href="#Prof" role="tab" aria-controls="Prof" aria-selected="false" onclick="Prof()">Proficiency report</a>
@@ -120,7 +120,7 @@ if(isset($user)){
                       </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
-                      <div class="tab-pane fade show active" id="TOL" role="tabpanel" aria-labelledby="TOL-tab"><br>
+                      <div class="tab-pane fade  <?php if(isset($_GET['success'])){ if($_GET['success'] == 'tol_area') { echo 'active'; } else{ ' '; } } else{ echo 'active'; } ?>" id="TOL" role="tabpanel" aria-labelledby="TOL-tab"><br>
                                    
                         <div class="table-responsive">
                           <form method="POST" action="../sample.php">
@@ -191,7 +191,7 @@ if(isset($user)){
                         </div>
                         
                       </div>
-                      <div class="tab-pane fade" id="ISR" role="tabpanel" aria-labelledby="profile-tab"><br>
+                      <div class="tab-pane  <?php if(isset($_GET['success'])){ if($_GET['success'] == 'isr') { echo 'active'; }else{ ''; } }else{ echo ''; } ?>" id="ISR" role="tabpanel" aria-labelledby="profile-tab"><br>
                           <div class="table-responsive">
                             <table class="table table-striped jambo_table bulk_action" width="100%" id="tbl_rmd">
                               <thead>
@@ -397,6 +397,7 @@ if(isset($user)){
                       <div class="x_panel">
                       <form method="POST" action="../includes/geoint.inc.php" enctype="multipart/form-data">
                             <input type="hidden" name="tol_id" id="tol_id">
+                            <input type="hidden" name="role" value="admin">
                             <div class="form-group">
                                 <label for="edit_date">Date</label>
                                 <input type="date" class="form-control" name="edit_date" id="edit_date" >
@@ -568,6 +569,7 @@ if(isset($user)){
                       <div class="x_panel">
                       <form method="POST" action="../includes/geoint.inc.php" enctype="multipart/form-data">
                       <input type="hidden" class="form-control" name="isr_id" id="isr_id">
+                      <input type="hidden" name="role" value="admin">
                         <div class="form-tol">
                         </div>
                         <div class="form-group">

@@ -41,16 +41,66 @@ class geoIntClass extends db{
         $stmt->execute([$id]);
     }
 
-    protected function updateTolArea($date, $time, $uav, $name, $remarks, $position, $unit, $address, $upload_kml, $id){
+    protected function updateTolArea($date, $time, $uav, $name, $remarks, $position, $unit, $address, $upload_kml, $id,$role){
         $connection = $this->dbOpen();
+        if($address == '' && $upload_kml != ''){
+           $stmt = $connection->prepare("UPDATE tol_area SET date = ?, time = ?, uav = ?, file_name = ?, remarks = ?, position = ?, unit = ?, kml_dir = ?WHERE id = ?");
 
-        $stmt = $connection->prepare("UPDATE tol_area SET date = ?, time = ?, uav = ?, file_name = ?, remarks = ?, position = ?, unit = ?,  address = ?, kml_dir = ? WHERE id = ?");
-        if(!$stmt->execute([$date, $time, $uav, $name, $remarks, $position, $unit, $address, $upload_kml, $id])){
-            $stmt = null;
-            header("location: ../geoint/index.php?errors=stmtfailed");
-            exit();
+            if(!$stmt->execute([$date, $time, $uav, $name, $remarks, $position, $unit , $upload_kml, $id])){
+
+                $stmt = null;
+                if($role == 'admin'){
+                    header("location: ../administrator/geoint.php?errors=stmtfailed");
+                    exit();
+                }
+                else{
+                    header("location: ../geoint/index.php?errors=stmtfailed");
+                    exit();
+                }
+            }
+           
         }
+        else if($upload_kml == '' && $address == ''){
+            $stmt = $connection->prepare("UPDATE tol_area SET date = ?, time = ?, uav = ?, file_name = ?, remarks = ?, position = ?, unit = ? WHERE id = ?");
+
+            if(!$stmt->execute([$date, $time, $uav, $name, $remarks, $position, $unit, $id])){
+
+                $stmt = null;
+                if($role == 'admin'){
+                    header("location: ../administrator/geoint.php?errors=stmtfailed");
+                    exit();
+                }
+                else{
+                    header("location: ../geoint/index.php?errors=stmtfailed");
+                    exit();
+                }
+            }
+        }
+        else if($upload_kml == '' && $address != ''){
+
+            $stmt = $connection->prepare("UPDATE tol_area SET date = ?, time = ?, uav = ?, file_name = ?, remarks = ?, position = ?, unit = ?, address= ? WHERE id = ?");
+
+            if(!$stmt->execute([$date, $time, $uav, $name, $remarks, $position, $unit,$address, $id])){
+
+                $stmt = null;
+                if($role == 'admin'){
+                    header("location: ../administrator/geoint.php?errors=stmtfailed");
+                    exit();
+                }
+                else{
+                    header("location: ../geoint/index.php?errors=stmtfailed");
+                    exit();
+                }
+            }
+        }
+       
+      
+        if($role == 'admin'){
+            header("location: ../administrator/geoint.php?success=tol_area");
+        }
+        else{
             header("location: ../geoint/index.php?success=1");
+        }
     }
 
     protected function insertISR($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation){
@@ -105,16 +155,30 @@ class geoIntClass extends db{
         }
     }
 
-    protected function updateIsrReport($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation,$id){
+    protected function updateIsrReport($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation,$id,$role){
         $connection = $this->dbOpen();
         $stmt = $connection->prepare("UPDATE isr_report SET subject = ?, isr_to = ?, reference = ?, background = ?, flight_details = ?, result = ?, analysis = ?, assessment = ?, lesson_learned = ?, best_practices = ?, issues_concern = ?, recommendation = ? WHERE id = ?");
         if(!$stmt->execute([$subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation, $id])){
             $stmt = null;
-            header ("location: ../geoint/index.php?errors=stmtfailed");
-            exit();
+
+            if($role == 'admin'){
+                header ("location: ../administrator/geoint.php?errors=stmtfailed");
+                exit();
+            }
+            else{
+                header ("location: ../geoint/index.php?errors=stmtfailed");
+                exit();
+            }
+          
         }
         else{
-            header('location: ../geoint/index.php');
+            if($role == 'admin'){
+                header ("location: ../administrator/geoint.php?success=isr");
+            }
+            else{
+                header('location: ../geoint/index.php');
+            }
+          
         }
     }
 

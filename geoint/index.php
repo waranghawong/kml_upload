@@ -130,10 +130,10 @@ if(isset($user)){
                                   <div class="category-filter col-sm-12">
                                       <select id="categoryFilter" class="form-control">
                                         <option value="">All</option>
-                                        <option value="SRC1">THOR</option>
-                                        <option value="SRC2">GRIFFIN</option>
-                                        <option value="SRC3">LEX 1</option>
-                                        <option value="SRC4">SK3</option>
+                                        <option value="THOR">THOR</option>
+                                        <option value="GRIFFIN">GRIFFIN</option>
+                                        <option value="LEX 1">LEX 1</option>
+                                        <option value="SK3">SK3</option>
                                       </select>
                                     </div>
                                  
@@ -397,6 +397,7 @@ if(isset($user)){
                       <div class="x_panel">
                       <form method="POST" action="../includes/geoint.inc.php" enctype="multipart/form-data">
                             <input type="hidden" name="tol_id" id="tol_id">
+                            <input type="hidden" name="role" value="geoint">
                             <div class="form-group">
                                 <label for="edit_date">Date</label>
                                 <input type="date" class="form-control" name="edit_date" id="edit_date" >
@@ -568,6 +569,7 @@ if(isset($user)){
                       <div class="x_panel">
                       <form method="POST" action="../includes/geoint.inc.php" enctype="multipart/form-data">
                       <input type="hidden" class="form-control" name="isr_id" id="isr_id">
+                      <input type="hidden" name="role" value="geoint">
                         <div class="form-tol">
                         </div>
                         <div class="form-group">

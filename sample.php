@@ -31,7 +31,7 @@
          // shell_exec('c:\WINDOWS\system32\cmd.exe @cmd /k \\\192.168.100.221\xampp\htdocs\kml_upload\kml_files\\'.$a.'');
 
          // $file = '\\\192.168.10.217\xampp\htdocs\kml\kml_files\\'.$a;
-      
+          var_dump($_POST);
           if(!file_exists($a)){ // file does not exist
               die('file not found');
           } else {

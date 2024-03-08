@@ -56,19 +56,21 @@ class geoIntCntrller extends geoIntClass {
 
     }
 
-    public function editTolArea($date, $time, $uav, $name, $remarks, $position, $unit, $address, $upload_kml, $id){
-        if($upload_kml == ''){
-            return $this->updateTolArea($date, $time, $uav, $name, $remarks, $position, $unit, $address, null, $id);
+    public function editTolArea($date, $time, $uav, $name, $remarks, $position, $unit, $address, $upload_kml, $id, $role){
+        var_dump($upload_kml['name']);
+        if($upload_kml['name'] == ''){
+            return $this->updateTolArea($date, $time, $uav, $name, $remarks, $position, $unit, $address, null, $id,$role);
         }
         else{
+
             $target_dir = "../kml_files/";
-            if ($file['name'] == trim($file['name']) && str_contains($file['name'], ' ')) {
-                $new_name = str_replace(' ', '_', $file['name']);
+            if ($upload_kml['name'] == trim($upload_kml['name']) && str_contains($upload_kml['name'], ' ')) {
+                $new_name = str_replace(' ', '_', $upload_kml['name']);
     
                 $target_file =  $target_dir . basename($new_name);
             }
             else{
-                $target_file =  $target_dir . basename($file["name"]);
+                $target_file =  $target_dir . basename($upload_kml["name"]);
             }
             
     
@@ -76,15 +78,15 @@ class geoIntCntrller extends geoIntClass {
             $uploadOk = 1;
     
             if(file_exists($target_file)) {
-                $target_file  = $target_dir .$this->random_string(). basename($file["name"]);
+                $target_file  = $target_dir .$this->random_string(). basename($upload_kml["name"]);
                 $uploadOk = 1;
             }
     
             if($uploadOk = 1){
                 
-                if (move_uploaded_file($file["tmp_name"], $target_file)) {
+                if (move_uploaded_file($upload_kml["tmp_name"], $target_file)) {
                     // echo "The file ". htmlspecialchars( basename( $file["name"])). " has been uploaded.";
-                    return $this->updateTolArea($date, $time, $uav, $name, $remarks, $position, $unit, $address, $upload_kml, $id);
+                    return $this->updateTolArea($date, $time, $uav, $name, $remarks, $position, $unit, $address, $target_file, $id,$role);
                   } else {
                     header("location: ../index.php?error=there_was_a_problem_uploading_your_file");
                   }
@@ -94,8 +96,8 @@ class geoIntCntrller extends geoIntClass {
         
     }
 
-    public function editIsrReport($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation,$id){
-        return $this->updateIsrReport($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation,$id);
+    public function editIsrReport($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation,$id,$role){
+        return $this->updateIsrReport($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation,$id,$role);
     }
 
     public function tolArea(){

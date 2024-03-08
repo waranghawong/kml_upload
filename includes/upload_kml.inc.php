@@ -7,6 +7,7 @@ $markers = new locationsCntrl();
 
 if(isset($_POST['submit_button'])){
     $date = $_POST['date'];
+    $role = $_POST['role'];
     $company = $_POST['company'];
     $name = $_POST['name'];
     $position = $_POST['position'];
@@ -23,11 +24,12 @@ if(isset($_POST['submit_button'])){
     $remarks = $_POST['remarks'];
 
     $address = $region_text.' '.$barangay_text.' '.$city_text.' '.$province_text;
-    $markers->uploadKMS($_FILES['upload_kml'],$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks);
+    $markers->uploadKMS($_FILES['upload_kml'],$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks, $role);
 }
 
 
 if(isset($_POST['submit_rmd_button'])){
+    $role = $_POST['role'];
     $date = $_POST['date'];
     $time = $_POST['time'];
     $frequency = $_POST['frequency'];
@@ -46,7 +48,7 @@ if(isset($_POST['submit_rmd_button'])){
 
     $address = $region_text.' '.$barangay_text.' '.$city_text.' '.$province_text;
 
-    $markers->insertRMD($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid);
+    $markers->insertRMD($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid, $role);
 }
 
 if(isset($_GET['rmdid'])){
@@ -66,6 +68,7 @@ if(isset($_GET['liberty_id'])){
 
 
 if(isset($_POST['mia_submit_button'])){
+    $role = $_POST['role'];
     $target_name = $_POST['target_name'];
     $phone_number = $_POST['phone_number'];
     $msisdn = $_POST['msisdn'];
@@ -80,10 +83,11 @@ if(isset($_POST['mia_submit_button'])){
     $last_activity = $_POST['last_activity'];
 
 
-    $markers->insertMIA($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity);
+    $markers->insertMIA($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity, $role);
 }
 
 if(isset($_POST['liberty_submit_button'])){
+    $role = $_POST['role'];
     $name = $_POST['name'];
     $sim = $_POST['sim'];
     $supplier = $_POST['supplier'];
@@ -92,10 +96,11 @@ if(isset($_POST['liberty_submit_button'])){
     $model = $_POST['model'];
     $phone_number = $_POST['phone_number'];
 
-    $markers->insertLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number);
+    $markers->insertLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number, $role);
 }
 
 if(isset($_POST['mia_edit_submit_button'])){
+    $role = $_POST['role'];
     $id = $_POST['mia_id'];
     $target_name = $_POST['target_name'];
     $phone_number = $_POST['phone_number'];
@@ -111,10 +116,11 @@ if(isset($_POST['mia_edit_submit_button'])){
     $last_activity = $_POST['last_activity'];
 
 
-    $markers->editMia($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity,$id);
+    $markers->editMia($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity,$id, $role);
 }
 
 if(isset($_POST['liberty_edit_submit_button'])){
+    $role = $_POST['role'];
     $id = $_POST['liberty_id'];
     $name = $_POST['name'];
     $sim = $_POST['sim'];
@@ -124,12 +130,13 @@ if(isset($_POST['liberty_edit_submit_button'])){
     $model = $_POST['model'];
     $phone_number = $_POST['phone_number'];
 
-    $markers->editLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number,$id);
+    $markers->editLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number,$id, $role);
 }
 
 
 if(isset($_POST['edit_selector_submit_button'])){
     $selector_id = $_POST['selector_id'];
+    $role = $_POST['role'];
     $date = $_POST['date'];
     $company = $_POST['company'];
     $name = $_POST['name'];
@@ -145,21 +152,23 @@ if(isset($_POST['edit_selector_submit_button'])){
     $city_text = $_POST['city_text'];
     $barangay_text = $_POST['barangay_text'];
     $remarks = $_POST['remarks'];
-    $address = '';
+    $address;
 
-    if($region_text = ''){
-        $address='';
+    if(empty($region_text)){
+        $address = '';   
+       
     }
     else{
         $address = $region_text.' '.$barangay_text.' '.$city_text.' '.$province_text;
     }
+   
 
-
-    $markers->editSelector($_FILES['upload_kml'],$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks, $selector_id);
+    $markers->editSelector($_FILES['upload_kml'],$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks, $selector_id, $role);
 }
 
 if(isset($_POST['submit_edit_rmd_button'])){
     $id = $_POST['rmd_id'];
+    $role = $_POST['role'];
     $date = $_POST['edit_date'];
     $time = $_POST['edit_time'];
     $frequency = $_POST['edit_frequency'];
@@ -177,7 +186,7 @@ if(isset($_POST['submit_edit_rmd_button'])){
     $barangay_text = $_POST['barangay_text'];
     $address = '';
 
-    if($region_text = ''){
+    if(empty($region_text)){
         $address='';
     }
     else{
@@ -185,7 +194,7 @@ if(isset($_POST['submit_edit_rmd_button'])){
     }
 
 
-    $markers->editRmd($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid, $id);
+    $markers->editRmd($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid, $id, $role, $address);
 }
 
 if(isset($_GET['delete_selector'])){

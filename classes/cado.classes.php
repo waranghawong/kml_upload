@@ -4,7 +4,7 @@
 class cadoClass extends db{
 
 
-    protected function insertOsint($date, $acc, $pers, $issues, $others){
+    protected function insertOsint($date, $acc, $pers, $issues, $others, $role){
         $datetimetoday = date("Y-m-d H:i:s");
         $connection = $this->dbOpen();
         $stmt = $connection->prepare('INSERT INTO osint (acc, personalities, issues, date,others,created_at) VALUES (?,?,?,?,?,?)');
@@ -15,11 +15,17 @@ class cadoClass extends db{
             exit();
         }
         else{
-            header('location: ../cado/index.php');
+            if($role == 'admin'){
+                header('location: ../administrator/cado.php');
+            }
+            else{
+                header('location: ../cado/index.php');
+            }
+   
         }
     }
 
-    protected function insertWacom($full_name, $alias, $bday, $address, $position, $affil, $others,$imageFile){
+    protected function insertWacom($full_name, $alias, $bday, $address, $position, $affil, $others,$imageFile, $role){
         $datetimetoday = date("Y-m-d H:i:s");
         $connection = $this->dbOpen();
         $stmt = $connection->prepare('INSERT INTO wacom (full_name, alias, bday, address, position, affil, dir, others ,created_at) VALUES (?,?,?,?,?,?,?,?,?)');
@@ -30,7 +36,13 @@ class cadoClass extends db{
             exit();
         }
         else{
-            header('location: ../cado/index.php');
+            if($role == 'admin'){
+                header('location: ../administrator/cado.php');
+            }
+            else{
+                header('location: ../cado/index.php');
+            }
+ 
         }
     }
 
@@ -82,7 +94,7 @@ class cadoClass extends db{
             header("location: ../cado/index.php?errors=stmtfailed");
             exit();
         }
-        if($role == 'administrator'){
+        if($role == 'admin'){
             header("location: ../administrator/cado.php?success=osint");
         }
         else{

@@ -401,6 +401,7 @@ if(isset($user)){
                     <div class="col-md-12">
                       <div class="x_panel">
                       <form method="POST" action="../includes/upload_kml.inc.php" enctype="multipart/form-data">
+                        <input type="hidden" value="sigint" name="role">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="date">Date</label>
@@ -500,6 +501,7 @@ if(isset($user)){
                       <div class="x_panel">
                       <form method="POST" action="../includes/upload_kml.inc.php" enctype="multipart/form-data">
                         <input type="hidden" name="rmd_id" id="rmd_id" value="">
+                        <input type="hidden" value="sigint" name="role">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="edit_date">Date</label>
@@ -598,6 +600,7 @@ if(isset($user)){
                     <div class="col-md-12">
                       <div class="x_panel">
                       <form method="POST" action="../includes/upload_kml.inc.php" enctype="multipart/form-data">
+                        <input type="hidden" name="role" value="sigint">
                             <div class="form-group">
                                 <label for="Name">Date</label>
                                 <input type="date" class="form-control" name="date">
@@ -705,6 +708,7 @@ if(isset($user)){
                       <div class="x_panel">
                       <form method="POST" action="../includes/upload_kml.inc.php" enctype="multipart/form-data">
                         <input type="hidden" id="selector_edit_id" name="selector_id">
+                        <input type="hidden" name="role" value="sigint">
                             <div class="form-group">
                                 <label for="Name">Date</label>
                                 <input type="date" class="form-control" name="date" id="selector_date">
@@ -811,6 +815,7 @@ if(isset($user)){
                     <div class="col-md-12">
                       <div class="x_panel">
                       <form method="POST" action="../includes/upload_kml.inc.php" enctype="multipart/form-data">
+                        <input type="hidden" value="sigint" name="role">
                             <div class="form-group">
                                 <label for="target_name">Target Name</label>
                                 <input type="text" class="form-control" name="target_name">
@@ -889,6 +894,7 @@ if(isset($user)){
                     <div class="col-md-12">
                       <div class="x_panel">
                       <form method="POST" action="../includes/upload_kml.inc.php" enctype="multipart/form-data">
+                        <input type="hidden" value="sigint" name="role">
                         <input type="hidden" name="mia_id" id="mia_id">
                             <div class="form-group">
                                 <label for="target_name">Target Name</label>

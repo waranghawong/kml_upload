@@ -29,13 +29,14 @@ if(isset($_POST['submit_tol_area'])){
 
 if(isset($_POST['submit_edit_tol_area'])){
     $id = $_POST['tol_id'];
-    $date = $_POST['date'];
-    $time = $_POST['time'];
+    $role = $_POST['role'];
+    $date = $_POST['edit_date'];
+    $time = $_POST['edit_time'];
     $uav = $_POST['uav'];
-    $name = $_POST['name'];
-    $remarks = $_POST['remarks'];
-    $position = $_POST['position'];
-    $unit = $_POST['unit'];
+    $name = $_POST['edit_name'];
+    $remarks = $_POST['edit_remarks'];
+    $position = $_POST['edit_position'];
+    $unit = $_POST['edit_unit'];
     $address = '';
   
     $region_text = $_POST['region_text'];
@@ -53,7 +54,7 @@ if(isset($_POST['submit_edit_tol_area'])){
 
 
 
-    $geoint->editTolArea($date, $time, $uav, $name, $remarks, $position, $unit, $address, $upload_kml, $id);
+    $geoint->editTolArea($date, $time, $uav, $name, $remarks, $position, $unit, $address, $upload_kml, $id,$role);
 }
 
 if(isset($_POST['submit_isr_button'])){
@@ -75,6 +76,7 @@ if(isset($_POST['submit_isr_button'])){
 
 if(isset($_POST['submit_edit_isr_button'])){
     $id = $_POST['isr_id'];
+    $role = $_POST['role'];
     $subject = $_POST['subject'];
     $isr_to = $_POST['isr_to'];
     $reference = $_POST['reference'];
@@ -88,7 +90,7 @@ if(isset($_POST['submit_edit_isr_button'])){
     $issues_concern = $_POST['issues_concern'];
     $recommendation = $_POST['recommendation'];
 
-    $geoint->editIsrReport($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation,$id);
+    $geoint->editIsrReport($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation,$id,$role);
 }
 
 if(isset($_GET['tol_record'])){

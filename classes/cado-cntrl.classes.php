@@ -2,15 +2,15 @@
 
 class cadoCntrller extends cadoClass {
 
-public function setOsint($date, $acc, $pers, $issues, $others){
-    return $this->insertOsint($date, $acc, $pers, $issues, $others);
+public function setOsint($date, $acc, $pers, $issues, $others, $role){
+    return $this->insertOsint($date, $acc, $pers, $issues, $others, $role);
 }
 
-public function setWacom($full_name, $alias, $bday, $address, $position, $affil, $others,$picture){
+public function setWacom($full_name, $alias, $bday, $address, $position, $affil, $others,$picture, $role){
 
     $imageFile = $this->uploadImage($picture);
 
-    return $this->insertWacom($full_name, $alias, $bday, $address, $position, $affil, $others,$imageFile,$id);
+    return $this->insertWacom($full_name, $alias, $bday, $address, $position, $affil, $others,$imageFile, $role);
 
 }
 

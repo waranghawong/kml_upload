@@ -57,7 +57,7 @@ if(isset($user)){
             <br />
 
             <!-- sidebar menu -->
-           
+
             <!-- /sidebar menu -->
 
           </div>
@@ -76,6 +76,7 @@ if(isset($user)){
                       <img src="../images/user.png" alt=""><?= ucfirst($name); ?>
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item"  href="profile.php"><i class="fa fa-user pull-right"></i> Profile</a>
                       <a class="dropdown-item"  href="../includes/logout.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                     </div>
                   </li>
@@ -186,7 +187,7 @@ if(isset($user)){
                                             echo ' <td>'.$a++.'</td>';
                                             echo ' <td>'.$row['full_name'].'</td>';
                                             echo ' <td>'.$row['alias'].'</td>';
-                                            echo ' <td>'.$row['dir'].'</td>';
+                                            echo ' <td><img src="'.$row['dir'].'" width="100px" height="80px"></td>';
                                             echo ' <td>'.$row['bday'].'</td>';
                                             echo ' <td>'.$row['address'].'</td>';
                                             echo ' <td>'.$row['position'].'</td>';
@@ -232,6 +233,7 @@ if(isset($user)){
                     <div class="col-md-12">
                       <div class="x_panel">
                       <form method="POST" action="../includes/cado.inc.php" enctype="multipart/form-data">
+                        <input type="hidden" value="cado" name="role">
                         <div class="form-group">
                             <label for="date">Date</label>
                             <input type="date" class="form-control" name="date" required>
@@ -339,6 +341,7 @@ if(isset($user)){
                     <div class="col-md-12">
                       <div class="x_panel">
                       <form method="POST" action="../includes/cado.inc.php" enctype="multipart/form-data">
+                        <input type="hidden" value="cado" name="role">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="first_name">First Name</label>
@@ -575,9 +578,9 @@ if(isset($user)){
       if(confirmation){
           $.ajax({
               method: "get",
-              url: "../includes/cado.inc.php?delete_liberty=" + id,
+              url: "../includes/cado.inc.php?delete_osint=" + id,
               success: function (response){
-              $("#liberty_"+id).remove();
+              $("#osint_"+id).remove();
             }
           })
       } 
@@ -588,9 +591,9 @@ if(isset($user)){
       if(confirmation){
           $.ajax({
               method: "get",
-              url: "../includes/cado.inc.php?delete_liberty=" + id,
+              url: "../includes/cado.inc.php?delete_wacom=" + id,
               success: function (response){
-              $("#liberty_"+id).remove();
+              $("#wacom_"+id).remove();
             }
           })
       } 

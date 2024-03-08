@@ -30,7 +30,7 @@ class locations extends db{
         }
     }
 
-    protected function insertKMSFILE($file,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks){
+    protected function insertKMSFILE($file,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks, $role){
         $datetimetoday = date("Y-m-d H:i:s");
         $connection = $this->dbOpen();
         $stmt = $connection->prepare('INSERT INTO kml_file (name, company, address, position, unit, selector_name, imsi, imei, lac_cid, remarks,date, time ,dir ,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
@@ -41,7 +41,13 @@ class locations extends db{
             exit();
         }
         else{
-            header('location: ../administrator/index.php');
+            if($role == 'admin'){
+                header('location: ../administrator/index.php');
+            }
+            else{
+                header('location: ../sigint/index.php');
+            }
+          
         }
 
     }
@@ -57,7 +63,7 @@ class locations extends db{
         } 
     }
 
-    protected function setRMD($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid){
+    protected function setRMD($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid, $role){
         $datetimetoday = date("Y-m-d H:i:s");
         $connection = $this->dbOpen();
         $stmt = $connection->prepare('INSERT INTO rmd_record (frequency, clarity, direction, subject, callsign, reciever, fc, src, barangay, municipality, province, date,time , grid_coordinate ,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
@@ -68,7 +74,13 @@ class locations extends db{
             exit();
         }
         else{
-            header('location: ../administrator/index.php');
+            if($role == 'admin'){
+                header('location: ../administrator/index.php');
+            }
+            else{
+                header('location: ../sigint/index.php');
+            }
+            
         }
     }
 
@@ -166,7 +178,7 @@ class locations extends db{
         }
     }
 
-    protected function setMia($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity){
+    protected function setMia($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity, $role){
         $datetimetoday = date("Y-m-d H:i:s");
         $connection = $this->dbOpen();
         $stmt = $connection->prepare('INSERT INTO mia (target_name, phone_number, msisdn, imei, imsi, tmsi, operator, mia_call, mia_sms, identities, event, last_activity,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)');
@@ -177,11 +189,17 @@ class locations extends db{
             exit();
         }
         else{
-            header('location: ../administrator/geoint.php');
+            if($role == 'admin'){
+                header('location: ../administrator/sigint.php');
+            } 
+            else{
+                header('location: ../sigint/index.php');
+            }
+            
         }
     }
 
-    protected function setLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number){
+    protected function setLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number, $role){
         $datetimetoday = date("Y-m-d H:i:s");
         $connection = $this->dbOpen();
         $stmt = $connection->prepare('INSERT INTO liberty (name, sim, supplier, liberty_imsi, liberty_imei, model, phone_number,created_at) VALUES (?,?,?,?,?,?,?,?)');
@@ -192,12 +210,18 @@ class locations extends db{
             exit();
         }
         else{
-            header('location: ../administrator/sigint.php');
+            if($role == 'admin'){
+                header('location: ../administrator/sigint.php');
+            } 
+            else{
+                header('location: ../sigint/index.php');
+            }
         }
     }
 
-    protected function updateSelector($files,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks, $id){
+    protected function updateSelector($files,$date, $company,$name, $position,$unit, $selector_name,$imsi, $imei,$time,$lac_cid, $address,$remarks, $id, $role){
         $connection = $this->dbOpen();
+       
         if($files != '' && $address != ''){
             $password = md5($password);
             $stmt = $connection->prepare("UPDATE kml_file SET name = ?, company = ?, address = ?, position = ?, unit = ?, selector_name = ?, imsi = ?, imei = ?, lac_cid = ?, remarks =? ,date = ?, time = ?,dir =? WHERE id = ?");
@@ -206,19 +230,30 @@ class locations extends db{
                 header("location: index.php?errors=stmtfailed");
                 exit();
             }
+            if($role == 'admin'){
                 header("location: ../administrator/sigint.php?success=1");
+            }
+            else{
+                header("location: ../sigint/index.php?success=1");
+            }
+               
 
         }
-        elseif($address == ''){
+        else if($address == " " && $files  != ''){
             $stmt = $connection->prepare("UPDATE kml_file SET name = ?, company = ?, position = ?, unit = ?, selector_name = ?, imsi = ?, imei = ?, lac_cid = ?, remarks =? ,date = ?, time = ?, dir = ? WHERE id = ?");
             if(!$stmt->execute([$name, $company, $position ,$unit, $selector_name, $imsi, $imei, $lac_cid, $remarks, $date, $time, $files, $id])){
                 $stmt = null;
                 header("location: index.php?errors=stmtfailed");
                 exit();
             }
+            if($role == 'admin'){
                 header("location: ../administrator/sigint.php?success=1");
+            }
+            else{
+                header("location: ../sigint/index.php?success=1");
+            }
         }
-        else{
+        else if($address != '' && $files  == ''){
    
             $stmt = $connection->prepare("UPDATE kml_file SET name = ?, company = ?, address = ?, position = ?, unit = ?, selector_name = ?, imsi = ?, imei = ?, lac_cid = ?, remarks =? ,date = ?, time = ? WHERE id = ?");
             if(!$stmt->execute([$name, $company,  $address, $position ,$unit, $selector_name, $imsi, $imei, $lac_cid, $remarks, $date, $time, $id])){
@@ -226,12 +261,31 @@ class locations extends db{
                 header("location: index.php?errors=stmtfailed");
                 exit();
             }
+            if($role == 'admin'){
                 header("location: ../administrator/sigint.php?success=1");
+            }
+            else{
+                header("location: ../sigint/index.php?success=1");
+            }
 
+        }
+        else{
+            $stmt = $connection->prepare("UPDATE kml_file SET name = ?, company = ?, position = ?, unit = ?, selector_name = ?, imsi = ?, imei = ?, lac_cid = ?, remarks =? ,date = ?, time = ? WHERE id = ?");
+            if(!$stmt->execute([$name, $company, $position ,$unit, $selector_name, $imsi, $imei, $lac_cid, $remarks, $date, $time, $id])){
+                $stmt = null;
+                header("location: index.php?errors=stmtfailed");
+                exit();
+            }
+            if($role == 'admin'){
+                header("location: ../administrator/sigint.php?success=1");
+            }
+            else{
+                header("location: ../sigint/index.php?success=1");
+            }
         }
     }
 
-    protected function updateMia($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity, $id){
+    protected function updateMia($target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity, $id, $role){
         $connection = $this->dbOpen();
         $stmt = $connection->prepare("UPDATE mia SET target_name = ? , phone_number = ?, msisdn = ?, imei = ?, imsi = ?, tmsi = ?, operator = ?, mia_call = ?, mia_sms = ?, identities = ?, event = ?, last_activity = ? WHERE id = ?");
         if(!$stmt->execute([$target_name, $phone_number, $msisdn,$imei, $imsi,$tmsi, $operator,$call, $sms ,$identities ,$event, $last_activity, $id])){
@@ -239,10 +293,15 @@ class locations extends db{
             header("location: index.php?errors=stmtfailed");
             exit();
         }
-        header("location: ../administrator/sigint.php?success=1");
+        if($role == 'admin'){
+            header('location: ../administrator/sigint.php');
+        } 
+        else{
+            header('location: ../sigint/index.php');
+        }
     }
 
-    protected function updateLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number, $id){
+    protected function updateLiberty($name, $sim, $supplier,$imsi, $imei,$model, $phone_number, $id, $role){
         $connection = $this->dbOpen();
         $stmt = $connection->prepare("UPDATE liberty SET name = ?, sim = ?, supplier = ?, liberty_imsi =?, liberty_imei = ?, model = ?, phone_number = ? WHERE id = ?");
         if(!$stmt->execute([$name, $sim, $supplier,$imsi, $imei,$model, $phone_number, $id])){
@@ -250,7 +309,12 @@ class locations extends db{
             header("location: index.php?errors=stmtfailed");
             exit();
         }
-        header("location: ../administrator/sigint.php?success=1");
+        if($role == 'admin'){
+            header('location: ../administrator/sigint.php');
+        } 
+        else{
+            header('location: ../sigint/index.php');
+        }
     }
 
     protected function removeCurrentSelector($id){
@@ -277,15 +341,31 @@ class locations extends db{
         $stmt->execute([$id]);
     }
 
-    protected function updateRmd($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid, $id){
+    protected function updateRmd($date, $time, $frequency,$clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $grid, $id, $role,$address){
         $connection = $this->dbOpen();
-        $stmt = $connection->prepare("UPDATE rmd_record SET frequency =?, clarity=?, direction=?, subject=?, callsign=?, reciever=?, fc=?, src=?, barangay=?, municipality=?, province=?, date=?,time=? , grid_coordinate=? WHERE id = ?");
-        if(!$stmt->execute([$frequency, $clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $date, $time,$grid, $id])){
-            $stmt = null;
-            header("location: index.php?errors=stmtfailed");
-            exit();
+        if($address == ''){
+            $stmt = $connection->prepare("UPDATE rmd_record SET frequency =?, clarity=?, direction=?, subject=?, callsign=?, reciever=?, fc=?, src=?, date=?,time=? , grid_coordinate=? WHERE id = ?");
+            if(!$stmt->execute([$frequency, $clarity, $direction,$subject, $callsign,$reciever, $fc ,$src, $date, $time,$grid, $id])){
+                $stmt = null;
+                header("location: index.php?errors=stmtfailed");
+                exit();
+            }
         }
-            header("location: ../administrator/sigint.php?success=1");
+        else{
+            $stmt = $connection->prepare("UPDATE rmd_record SET frequency =?, clarity=?, direction=?, subject=?, callsign=?, reciever=?, fc=?, src=?, barangay=?, municipality=?, province=?, date=?,time=? , grid_coordinate=? WHERE id = ?");
+            if(!$stmt->execute([$frequency, $clarity, $direction,$subject, $callsign,$reciever, $fc ,$src ,$barangay_text, $city_text, $province_text, $date, $time,$grid, $id])){
+                $stmt = null;
+                header("location: index.php?errors=stmtfailed");
+                exit();
+            }
+        }
+
+        if($role == 'admin'){
+            header('location: ../administrator/sigint.php');
+        } 
+        else{
+            header('location: ../sigint/index.php');
+        }
     }
 }
 
