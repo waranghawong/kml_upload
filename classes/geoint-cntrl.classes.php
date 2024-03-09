@@ -2,7 +2,7 @@
 
 class geoIntCntrller extends geoIntClass {
 
-    public function setTolArea($date, $time, $uav, $name, $remarks, $position, $unit, $address, $file){
+    public function setTolArea($date, $time, $uav, $name, $remarks, $position, $unit, $address, $file, $role){
         
 
         $target_dir = "../kml_files/";
@@ -28,7 +28,7 @@ class geoIntCntrller extends geoIntClass {
             
             if (move_uploaded_file($file["tmp_name"], $target_file)) {
                 // echo "The file ". htmlspecialchars( basename( $file["name"])). " has been uploaded.";
-                return $this->insertTolArea($date, $time, $uav, $name, $remarks, $position, $unit, $address, $target_file);
+                return $this->insertTolArea($date, $time, $uav, $name, $remarks, $position, $unit, $address, $target_file, $role);
               } else {
                 echo 'sadfawefawef';
               }
@@ -50,10 +50,14 @@ class geoIntCntrller extends geoIntClass {
     }
 
 
-    public function setISR($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation){
+    public function setISR($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation, $role){
 
-        return $this->insertISR($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation);
+        return $this->insertISR($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation, $role);
 
+    }
+
+    public function setProf($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation, $role){
+        return $this->insertProf($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation, $role);
     }
 
     public function editTolArea($date, $time, $uav, $name, $remarks, $position, $unit, $address, $upload_kml, $id, $role){
@@ -97,8 +101,12 @@ class geoIntCntrller extends geoIntClass {
     }
 
     public function editIsrReport($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation,$id,$role){
-        return $this->updateIsrReport($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation,$id,$role);
+       return $this->updateIsrReport($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation,$id,$role);
     }
+
+    public function editProfReport($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation,$id,$role){
+        return $this->updateProfReport($subject, $isr_to, $reference, $background, $flight_details, $result, $analysis,$assessment, $lesson_learned, $best_practices, $issues_concern, $recommendation,$id,$role);
+     }
 
     public function tolArea(){
        return $this->getTolArea();
@@ -107,6 +115,11 @@ class geoIntCntrller extends geoIntClass {
     public function isrData(){
         return $this->getIsrData();
      }
+
+    public function profData(){
+    return $this->getProfData();
+    }
+
 
     public function selectedTol($id){
         echo json_encode($this->getSelectedTol($id));
@@ -120,5 +133,36 @@ class geoIntCntrller extends geoIntClass {
     public function selectedIsr($id){
         echo json_encode($this->getSelectedIsr($id));
     }
+    public function selectedProf($id){
+        echo json_encode($this->getSelectedProf($id));
+    }
+    
+    public function addUav($role, $quantity, $type_of_drone, $system_number, $drone_number, $flight_details, $battery_serial, $unit, $remark){
+        return $this->setUav($role, $quantity, $type_of_drone,$system_number, $drone_number, $flight_details, $battery_serial, $unit, $remark);
+    }
+
+    public function editUav($role, $quantity, $type_of_drone,$system_number, $drone_number, $flight_details, $battery_serial, $unit, $remark,$id){
+        return $this->updateUav($role, $quantity, $type_of_drone,$system_number, $drone_number, $flight_details, $battery_serial, $unit, $remark,$id);
+    }
+
+    public function getUav(){
+        return $this->getUavList();
+    }
+
+    public function getUavId($id){
+        echo json_encode($this->getCurrentUavId($id));
+    }
+
+    public function delCurrentIsr($id){
+        $this->deleteIsr($id);
+        return json_encode(array("statusCode"=>200));
+    }
+
+    public function delCurrentProf($id){
+        $this->deleProf($id);
+        return json_encode(array("statusCode"=>200));
+    }
+
+    
 }
 ?>

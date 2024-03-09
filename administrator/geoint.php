@@ -18,6 +18,7 @@ if(isset($user)){
   if($role == '0'){ 
 
 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -104,10 +105,10 @@ if(isset($user)){
                         <a class="nav-link <?php if(isset($_GET['success'])){ if($_GET['success'] == 'isr') { echo 'active'; }else{ ''; } }else{ echo ''; } ?>" id="ISR-tab" data-toggle="tab" href="#ISR" role="tab" aria-controls="ISR" aria-selected="false" onclick="isr()">ISR report</a>
                       </li>
                       <li class="nav-item mr-1">
-                        <a class="nav-link" id="Prof-tab" data-toggle="tab" href="#Prof" role="tab" aria-controls="Prof" aria-selected="false" onclick="Prof()">Proficiency report</a>
+                        <a class="nav-link <?php if(isset($_GET['success'])){ if($_GET['success'] == 'prof') { echo 'active'; }else{ ''; } }else{ echo ''; } ?>" id="Prof-tab" data-toggle="tab" href="#Prof" role="tab" aria-controls="Prof" aria-selected="false" onclick="Prof()">Proficiency report</a>
                       </li>
                       <li class="nav-item mr-1">
-                        <a class="nav-link" id="uav-tab" data-toggle="tab" href="#uav" role="tab" aria-controls="uav" aria-selected="false" onclick="uav()">UAV utilization</a>
+                        <a class="nav-link <?php if(isset($_GET['success'])){ if($_GET['success'] == 'uav') { echo 'active'; }else{ ''; } }else{ echo ''; } ?>" id="uav-tab" data-toggle="tab" href="#uav" role="tab" aria-controls="uav" aria-selected="false" onclick="uav()">UAV utilization</a>
                       </li>
                       <li class="nav-item ml-auto mt-0">
                       <div class="input-group">
@@ -124,7 +125,7 @@ if(isset($user)){
                                    
                         <div class="table-responsive">
                           <form method="POST" action="../sample.php">
-                              <table class="table table-striped jambo_table bulk_action" id="example">
+                              <table class="table table-striped jambo_table bulk_action" id="example" width="100%">
                                 <thead>
                                   <tr class="headings">
                                   <div class="category-filter col-sm-12">
@@ -208,7 +209,7 @@ if(isset($user)){
                                   <th class="column-title">Best Practices:</th>
                                   <th class="column-title">Issues and Concerns:</th>
                                   <th class="column-title">Recommendation:</th>
-                                  <th class="column-title">Actopm:</th>
+                                  <th class="column-title">Action:</th>
                                  
                                 </tr>
                               </thead>
@@ -223,7 +224,7 @@ if(isset($user)){
                                         $a = 0;
                                     ?>
                                       
-                                      <tr id="tol_<?= $tol['id'] ?>">
+                                      <tr id="isr_<?= $row['id'] ?>">
                                           <td><?= $row['subject'] ?></td>
                                           <td><?= $row['isr_to'] ?></td>
                                           <td><?= $row['reference'] ?></td>
@@ -248,39 +249,114 @@ if(isset($user)){
                             </table>
                         </div>
                       </div>
-                      <div class="tab-pane fade" id="uav-tab" role="tabpanel" aria-labelledby="profile-tab"><br>
+                      <div class="tab-pane <?php if(isset($_GET['success'])){ if($_GET['success'] == 'prof') { echo 'active'; }else{ ''; } }else{ echo ''; } ?>" id="Prof" role="tabpanel" aria-labelledby="prof-tab"><br>
                           <div class="table-responsive">
-                            <table class="table table-striped jambo_table bulk_action" id="tbl_mia">
+                          <table class="table table-striped jambo_table bulk_action" width="100%" id="tbl_prof">
                               <thead>
                                 <tr class="headings">
-                                  <th class="column-title"></th>
-                                  <th class="column-title">TARGET NAME </th>
-                                  <th class="column-title">PHONE NUMBER </th>
-                                  <th class="column-title">MSISDN </th>
-                                  <th class="column-title">IMEI </th>
-                                  <th class="column-title">IMSI </th>
-                                  <th class="column-title">TMSI </th>
-                                  <th class="column-title">OPERATOR </th>
-                                  <th class="column-title">CALLS </th>
-                                  <th class="column-title">SMS </th>
-                                  <th class="column-title">IDENTITIES </th>
-                                  <th class="column-title">EVENT </th>
-                                  <th class="column-title">LAST ACTIVITY </th>
+                                  <th class="column-title">Subject:</th>
+                                  <th class="column-title">To:</th>
+                                  <th class="column-title">Reference:</th>
+                                  <th class="column-title">Background:</th>
+                                  <th class="column-title">Flight Details:</th>
+                                  <th class="column-title">Result:</th>
+                                  <th class="column-title">Analysis:</th>
+                                  <th class="column-title">Assessment:</th>
+                                  <th class="column-title">Lesson learned:</th>
+                                  <th class="column-title">Best Practices:</th>
+                                  <th class="column-title">Issues and Concerns:</th>
+                                  <th class="column-title">Recommendation:</th>
+                                  <th class="column-title">Action:</th>
                                  
-                  
-                                  </th>
-                                  <th class="bulk-actions" colspan="16">
-                                    <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-                                  </th>
                                 </tr>
                               </thead>
 
                               <tbody>
-                                 
+                                  <?php
+                                    if($tol_area->profData() == false){
+                                      echo '';
+                                    }
+                                    else{
+                                      foreach($tol_area->profData() as $row){
+                                        $a = 0;
+                                    ?>
+                                      
+                                      <tr id="prof_<?= $tol['id'] ?>">
+                                          <td><?= $row['subject'] ?></td>
+                                          <td><?= $row['isr_to'] ?></td>
+                                          <td><?= $row['reference'] ?></td>
+                                          <td><?= $row['background'] ?></td>
+                                          <td><?= $row['flight_details'] ?></td>
+                                          <td><?= $row['result'] ?></td>
+                                          <td><?= $row['analysis'] ?></td>
+                                          <td><?= $row['assessment'] ?></td>
+                                          <td><?= $row['lesson_learned'] ?></td>
+                                          <td><?= $row['best_practices'] ?></td>
+                                          <td><?= $row['issues_concern'] ?></td>
+                                          <td><?= $row['recommendation'] ?></td>
+                            
+                                          <td><button type="button" data-toggle="tooltip" data-placement="top" title="edit" onclick="editProf(<?= $row['id'];?>)" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button> <button type="button" onclick="delProf(<?= $row['id'];?>)" class="btn btn-sm btn-danger dlt_record" data-toggle="tooltip" data-placement="top" title="delete record"><i class="fa fa-trash"></button></td>
+                                    <?php
+                                    }
+                                    }
+                                    
+                                    
+                                    ?>
                               </tbody>
                             </table>
                         </div>
                       </div>
+
+                      <div class="tab-pane <?php if(isset($_GET['success'])){ if($_GET['success'] == 'uav') { echo 'active'; }else{ ''; } }else{ echo ''; } ?>" id="uav" role="tabpanel" aria-labelledby="uav-tab"><br>
+                          <div class="table-responsive">
+                            <table class="table table-striped jambo_table bulk_action" id="tbl_uav" width="100%">
+                              <thead>
+                                <tr class="headings">
+                                  <th class="column-title">#</th>
+                                  <th class="column-title">Quantity </th>
+                                  <th class="column-title">Type of drone </th>
+                                  <th class="column-title">System Number </th>
+                                  <th class="column-title">Drone Number </th>
+                                  <th class="column-title">Battery Serial </th>
+                                  <th class="column-title">Unit </th>
+                                  <th class="column-title">Remarks </th>
+                                  <th class="column-title">Action </th>
+                                </tr>
+                              </thead>
+
+                              <tbody>
+                                  <?php
+                                    if($tol_area->getUav() == false){
+                                      echo '';
+                                    }
+                                    else{
+                                      foreach($tol_area->getUav() as $row){
+                                        $a = 1;
+                                    ?>
+                                      
+                                      <tr id="tol_<?= $tol['id'] ?>">
+                                          <td><?= $a++ ?></td>
+                                          <td><?= $row['quantity'] ?></td>
+                                          <td><?= $row['type_of_drone'] ?></td>
+                                          <td><?= $row['system_number'] ?></td>
+                                          <td><?= $row['drone_number'] ?></td>
+                                          <td><?= $row['battery_serial'] ?></td>
+                                          <td><?= $row['unit'] ?></td>
+                                          <td><?= $row['remarks'] ?></td>
+                            
+                                          <td><button type="button" data-toggle="tooltip" data-placement="top" title="edit" onclick="editUav(<?= $row['id'];?>)" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button> <button type="button" onclick="delUav(<?= $row['id'];?>)" class="btn btn-sm btn-danger dlt_record" data-toggle="tooltip" data-placement="top" title="delete record"><i class="fa fa-trash"></button></td>
+                                    <?php
+                                    }
+                                    }
+                                    
+                                    
+                                    ?>
+                              </tbody>
+                            </table>
+                        </div>
+                      </div>
+
+
                     </div>
                   </div>
                 </div>
@@ -308,6 +384,7 @@ if(isset($user)){
                     <div class="col-md-12">
                       <div class="x_panel">
                       <form method="POST" action="../includes/geoint.inc.php" enctype="multipart/form-data">
+                         <input type="hidden" class="form-control" name="role" value="admin">
                             <div class="form-group">
                                 <label for="Name">Date</label>
                                 <input type="date" class="form-control" name="date">
@@ -487,6 +564,7 @@ if(isset($user)){
                     <div class="col-md-12">
                       <div class="x_panel">
                       <form method="POST" action="../includes/geoint.inc.php" enctype="multipart/form-data">
+                        <input type="hidden" name="role" value="admin">
                         <div class="form-tol">
                         </div>
                         <div class="form-group">
@@ -635,6 +713,303 @@ if(isset($user)){
         </div>
       
         <!-- end edit isr modal -->
+
+          <!-- modal for adding profeciency -->
+          <div class="modal fade addProf" tabindex="-1" id="add_modal" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add Proficiency Report</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <div class="tol">
+                    <div class="col-md-12">
+                      <div class="x_panel">
+                      <form method="POST" action="../includes/geoint.inc.php" enctype="multipart/form-data">
+                        <input type="hidden" value="admin" name="role">
+                        <div class="form-tol">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" class="form-control" name="subject">
+                        </div>
+                        <div class="form-group">
+                            <label for="isr_to">To</label>
+                            <input type="text" class="form-control" name="isr_to">
+                        </div>
+                        <div class="form-group">
+                            <label for="reference">Reference</label>
+                            <input type="text" class="form-control" name="reference">
+                        </div>
+                        <div class="form-group">
+                            <label for="background">Background</label>
+                            <input type="text" class="form-control" name="background">
+                        </div>
+                        <div class="form-group">
+                            <label for="flight_details">Flight Details</label>
+                            <input type="text" class="form-control" name="flight_details" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="result">Result</label>
+                            <input type="text" class="form-control" name="result" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="analysis">Analysis</label>
+                            <input type="text" class="form-control" name="analysis" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="assessment">Assessment</label>
+                            <input type="text" class="form-control" name="assessment" required> 
+                        </div>
+                        <div class="form-group">
+                            <label for="lesson_learned">Lesson Learned</label>
+                            <input type="text" class="form-control" name="lesson_learned" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="best_practices">Best Practices</label>
+                            <input type="text" class="form-control" name="best_practices" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="issues_concern">Issues and Concern</label>
+                            <input type="text" class="form-control" name="issues_concern" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="recommendation">Recommendation</label>
+                            <input type="text" class="form-control" name="recommendation">
+                        </div>
+                        
+                    
+                      </div>               
+                    </div>
+                 </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" name="submit_prof_button" class="btn btn-primary">Save</button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      
+        <!-- end profeciency modal -->
+
+          <!-- modal for edit profeciency -->
+          <div class="modal fade edit_prof" tabindex="-1" id="add_modal" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Edit Proficiency Report</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <div class="tol">
+                    <div class="col-md-12">
+                      <div class="x_panel">
+                      <form method="POST" action="../includes/geoint.inc.php" enctype="multipart/form-data">
+                      <input type="hidden" class="form-control" name="isr_id" id="prof_id">
+                      <input type="hidden" name="role" value="admin">
+                        <div class="form-tol">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" class="form-control" name="subject" id="prof-subject">
+                        </div>
+                        <div class="form-group">
+                            <label for="isr_to">To</label>
+                            <input type="text" class="form-control" name="isr_to" id="prof-isr_to">
+                        </div>
+                        <div class="form-group">
+                            <label for="reference">Reference</label>
+                            <input type="text" class="form-control" name="reference" id="prof-reference">
+                        </div>
+                        <div class="form-group">
+                            <label for="background">Background</label>
+                            <input type="text" class="form-control" name="background" id="prof-background">
+                        </div>
+                        <div class="form-group">
+                            <label for="flight_details">Flight Details</label>
+                            <input type="text" class="form-control" name="flight_details" id="prof-flight_details">
+                        </div>
+                        <div class="form-group">
+                            <label for="result">Result</label>
+                            <input type="text" class="form-control" name="result" id="prof-result">
+                        </div>
+                        <div class="form-group">
+                            <label for="analysis">Analysis</label>
+                            <input type="text" class="form-control" name="analysis" id="prof-analysis">
+                        </div>
+                        <div class="form-group">
+                            <label for="assessment">Assessment</label>
+                            <input type="text" class="form-control" name="assessment" id="prof-assessment"> 
+                        </div>
+                        <div class="form-group">
+                            <label for="lesson_learned">Lesson Learned</label>
+                            <input type="text" class="form-control" name="lesson_learned" id="prof-lesson_learned">
+                        </div>
+                        <div class="form-group">
+                            <label for="best_practices">Best Practices</label>
+                            <input type="text" class="form-control" name="best_practices" id="prof-best_practices">
+                        </div>
+                        <div class="form-group">
+                            <label for="issues_concern">Issues and Concern</label>
+                            <input type="text" class="form-control" name="issues_concern" id="prof-issues_concern">
+                        </div>
+                        <div class="form-group">
+                            <label for="recommendation">Recommendation</label>
+                            <input type="text" class="form-control" name="recommendation" id="prof-recommendation">
+                        </div>
+                        
+                    
+                      </div>               
+                    </div>
+                 </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" name="submit_edit_prof_button" class="btn btn-primary">Save</button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      
+        <!-- end edit profeciency modal -->
+
+          <!-- modal for adding uav -->
+          <div class="modal fade add_uav" tabindex="-1" id="add_modal" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add UAV</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <div class="tol">
+                    <div class="col-md-12">
+                      <div class="x_panel">
+                      <form method="POST" action="../includes/geoint.inc.php" enctype="multipart/form-data">
+                        <input type="hidden" value="admin" name="role">
+                        <div class="form-tol">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Quantity</label>
+                            <input type="number" class="form-control" name="quantity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="isr_to">Type of drone</label>
+                            <input type="text" class="form-control" name="type_of_drone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reference">System Number</label>
+                            <input type="number" class="form-control" name="system_number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="background">Drone Number</label>
+                            <input type="number" class="form-control" name="drone_number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="flight_details">Flight Details</label>
+                            <input type="text" class="form-control" name="flight_details" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="result">Battery Serial</label>
+                            <input type="text" class="form-control" name="battery_serial" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="analysis">Unit</label>
+                            <input type="text" class="form-control" name="unit" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="assessment">Remarks</label>
+                            <input type="text" class="form-control" name="remark" required> 
+                        </div>
+                    
+                      </div>               
+                    </div>
+                 </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" name="submit_uav" class="btn btn-primary">Save</button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      
+        <!-- end uav modal -->
+
+          <!-- modal for edit uav modal-->
+          <div class="modal fade edit_uav" tabindex="-1" id="add_modal" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Edit Proficiency Report</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <div class="tol">
+                    <div class="col-md-12">
+                      <div class="x_panel">
+                      <form method="POST" action="../includes/geoint.inc.php" enctype="multipart/form-data">
+                      <input type="hidden" class="form-control" name="uav_id" id="uav_id">
+                      <input type="hidden" name="role" value="admin">
+                        <div class="form-tol">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Quantity</label>
+                            <input type="number" class="form-control" id="uav-quantity" name="quantity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="isr_to">Type of drone</label>
+                            <input type="text" class="form-control" id="uav-type_of_drone" name="type_of_drone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reference">System Number</label>
+                            <input type="number" class="form-control" id="uav-system_number" name="system_number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="background">Drone Number</label>
+                            <input type="number" class="form-control" id="uav-drone_number" name="drone_number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="flight_details">Flight Details</label>
+                            <input type="text" class="form-control" id="uav-flight_details" name="flight_details" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="result">Battery Serial</label>
+                            <input type="text" class="form-control" id="uav-battery_serial" name="battery_serial" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="analysis">Unit</label>
+                            <input type="text" class="form-control" id="uav-unit" name="unit" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="assessment">Remarks</label>
+                            <input type="text" class="form-control" id="uav-remark" name="remark" required> 
+                        </div>
+                        
+                    
+                      </div>               
+                    </div>
+                 </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" name="submit_edit_uav_button" class="btn btn-primary">Save</button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      
+        <!-- end edit uav modal -->
  
 
         
@@ -673,6 +1048,8 @@ if(isset($user)){
        $("document").ready(function () {
 
         $('#tbl_rmd').DataTable();
+        $('#tbl_prof').DataTable();
+        $('#tbl_uav').DataTable();
         $('#example').dataTable({
           "searching": true
         });
@@ -716,12 +1093,51 @@ if(isset($user)){
       function isr(){
        document.getElementById('add_button').setAttribute('onclick','addISR()')
       }
+      function Prof(){
+       document.getElementById('add_button').setAttribute('onclick','addProf()')
+      }
+      function uav(){
+       document.getElementById('add_button').setAttribute('onclick','addUav()')
+      }
       function addTol(){
         $(".tol_area").modal("show");
       }
       function addISR(){
     
         $(".add_isr").modal("show");
+      }
+      function addProf(){
+        $(".addProf").modal("show");
+      }
+      function addUav(){
+        $(".add_uav").modal("show");
+      }
+
+      function editProf(id){
+        $.ajax({
+            method: "get",
+            dataType: "json",
+            url: "../includes/geoint.inc.php?prof_id=" + id,
+            success: function (response){
+      
+              $('#prof_id').val(id)
+              $('#prof-subject').val(response.subject)
+              $('#prof-isr_to').val(response.isr_to)
+              $('#prof-reference').val(response.reference)
+              $('#prof-background').val(response.background)
+              $('#prof-flight_details').val(response.flight_details)
+              $('#prof-result').val(response.result)
+              $('#prof-analysis').val(response.analysis)
+              $('#prof-assessment').val(response.assessment)
+              $('#prof-lesson_learned').val(response.lesson_learned)
+              $('#prof-best_practices').val(response.best_practices)
+              $('#prof-issues_concern').val(response.issues_concern)
+              $('#prof-recommendation').val(response.recommendation)  
+             
+            }
+        })
+        // $('#prof_uid').val(prof_id);
+        $('.edit_prof').modal(); 
       }
 
       function editIsr(id){
@@ -764,7 +1180,22 @@ if(isset($user)){
                 method: "get",
                 url: "../includes/geoint.inc.php?delete_isr=" + id,
                 success: function (response){
-                $("#selector_"+id).remove();
+                $("#isr_"+id).remove();
+                }
+            })
+        }
+      }
+
+      function delProf(id){
+
+        var confirmation = confirm("are you sure you want to remove the item?");
+
+        if(confirmation){
+            $.ajax({
+                method: "get",
+                url: "../includes/geoint.inc.php?delete_prof=" + id,
+                success: function (response){
+                $("#prof_"+id).remove();
                 }
             })
         }
@@ -807,6 +1238,32 @@ if(isset($user)){
           // $('#prof_uid').val(prof_id);
           $('.edit_tol_area').modal(); 
       }
+
+      function editUav(id){
+        
+        $.ajax({
+              method: "get",
+              dataType: "json",
+              url: "../includes/geoint.inc.php?uav_id=" + id,
+              success: function (response){
+              $.each(response, function(index, data) {
+                      console.log(data)
+                      $("#uav_id").val(id); 
+                      $("#uav-quantity").val(data.quantity); 
+                      $('#uav-type_of_drone').val(data.type_of_drone)
+                      $('#uav-system_number').val(data.system_number)
+                      $('#uav-drone_number').val(data.drone_number)
+                      $('#uav-flight_details').val(data.flight_details)
+                      $('#uav-battery_serial').val(data.battery_serial)
+                      $('#uav-unit').val(data.unit)
+                      $('#uav-remark').val(data.remarks)
+                      
+                  });
+              }
+          })
+          // $('#prof_uid').val(prof_id);
+          $('.edit_uav').modal(); 
+      }
     </script>
   </body>
 </html>
@@ -820,5 +1277,5 @@ if(isset($user)){
 else{
   header('location: ../login.html');
 }
-
+x
 ?>
